@@ -27,14 +27,12 @@ namespace AssemblyCSharp
 
 			spawn.transform.position = new Vector2 (x, y);
 			spawn.GetComponent<Rigidbody2D> ().mass = mass;			
-			spawn.name = AssemblyCSharp.NeuronalNetwork.Util.CreatePassword (5);
+			spawn.name = AssemblyCSharp.Util.CreatePassword (5);
 			spawn.transform.parent = spawnArea.transform;
 			
 			spawn.GetComponent<SpriteRenderer> ().color = new Color (Random.Range(0.3f, 1),
 			                                                        Random.Range(0.3f, 1),
 			                                                        Random.Range(0.3f, 1));
-
-			spawn.AddComponent<AssemblyCSharp.NeuronalNetwork.Brain>();
 
 			return spawn;
 		}
@@ -57,7 +55,7 @@ namespace AssemblyCSharp
 			thrust.GetComponent<Rigidbody2D> ().AddForce (-dir * mass / ch.Mass * factor);
 		
 			thrust.transform.parent = cell.transform.parent;
-			thrust.name = cell.name + AssemblyCSharp.NeuronalNetwork.Util.CreatePassword (1);
+			thrust.name = cell.name + AssemblyCSharp.Util.CreatePassword (1);
 		
 			var parentColor = cell.GetComponent<SpriteRenderer> ().color;
 			var drift = Random.insideUnitSphere * 0.03f;
@@ -67,8 +65,6 @@ namespace AssemblyCSharp
 		                            parentColor.b + drift.z);
 		
 			thrust.GetComponent<SpriteRenderer> ().color = childColor;
-
-			thrust.GetComponent<NeuronalNetwork.Brain> ().parent = cell.GetComponent<NeuronalNetwork.Brain> ();
 
 			return thrust;
 		}

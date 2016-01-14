@@ -1,18 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+namespace AssemblyCSharp.Modules {
 public class Sensor : MonoBehaviour
 {
 	public GameObject target, candidate;
-	public int Index;
-	[Range(0, 0.5f)]
-	public float
+	public Parameter
 		ScanChance;
-	[Range(0.1f, 500)]
-	public float
+	public Parameter
 		ScanMaxRange;
-	[Range(0.1f, 10f)]
-	public float
+	public Parameter
 		PreyFactor;
 
 	public void SwitchToCandidate ()
@@ -25,12 +22,12 @@ public class Sensor : MonoBehaviour
 	{
 		var myMass = GetComponentInParent<Rigidbody2D> ().mass;
 
-		if (Random.value < ScanChance) {
+		if (Random.value < ScanChance.Value) {
 
 			var dir = Random.insideUnitCircle.normalized;
 			var start = (Vector2)transform.position;
 
-			RaycastHit2D hit = Physics2D.Raycast (start, dir, ScanMaxRange);
+			RaycastHit2D hit = Physics2D.Raycast (start, dir, ScanMaxRange.Value);
 			if (hit.collider != null && hit.collider.tag == "Cell") {
 				candidate = hit.collider.gameObject;
 
@@ -73,4 +70,5 @@ public class Sensor : MonoBehaviour
 		var score = cell.GetComponent<Rigidbody2D> ().mass / (dist * dist);
 		return score;
 	}*/
+}
 }

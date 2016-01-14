@@ -1,19 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
-using AssemblyCSharp.NeuronalNetwork;
 
 namespace AssemblyCSharp
 {
 	public class Controller : MonoBehaviour
 	{
 		CellHandler ch;
-		Brain brain;
 
 		// Use this for initialization
 		void Start ()
 		{
 			ch = GetComponent<CellHandler> ();
-			brain = GetComponent<Brain> ();
 		}
 	
 		// Update is called once per frame
@@ -22,6 +19,8 @@ namespace AssemblyCSharp
 			if (ch.Mass < Shrinker.StaticMinMass / Thruster.StaticThrustToMassRatio)
 				enabled = false;
 
+			/*
+			// TODO: replace
 			var decision = brain.GetOutput ();
 
 			if (decision.Move) {
@@ -35,6 +34,7 @@ namespace AssemblyCSharp
 				if (decision.Switch[i])
 					GetComponentsInChildren<Sensor>()[i].SwitchToCandidate();
 			}
+			*/
 		}
 	}
 }

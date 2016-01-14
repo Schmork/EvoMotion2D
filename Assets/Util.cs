@@ -1,5 +1,5 @@
 using System;
-namespace AssemblyCSharp.NeuronalNetwork
+namespace AssemblyCSharp
 {
 	public static class Util
 	{
@@ -11,6 +11,10 @@ namespace AssemblyCSharp.NeuronalNetwork
 					rnd = new Random();
 				return rnd;
 			}
+		}
+
+		public static float SignedRange(float unsignedRange) {
+			return (float)rnd.NextDouble () * 2 * unsignedRange - unsignedRange;
 		}
 				
 		public static float Clamp(float x) {

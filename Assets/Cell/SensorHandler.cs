@@ -13,7 +13,6 @@ public class SensorHandler : MonoBehaviour {
 		while(SensorContainer.transform.childCount < NumberOfSensors) {
 			var sensor = (GameObject)GameObject.Instantiate(SensorPrefab, transform.position, Quaternion.identity);
 			sensor.transform.parent = SensorContainer.transform;
-			sensor.GetComponent<Sensor>().Index = i++;
 		}
 	}
 }
