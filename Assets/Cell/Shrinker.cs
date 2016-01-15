@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-namespace AssemblyCSharp
+namespace EvoMotion2D.Cell
 {
 	public class Shrinker : MonoBehaviour
 	{

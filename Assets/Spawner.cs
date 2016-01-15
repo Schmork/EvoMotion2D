@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace AssemblyCSharp
+namespace EvoMotion2D
 {
 	public class Spawner : MonoBehaviour
 	{

@@ -1,9 +1,8 @@
-using System;
-namespace AssemblyCSharp.Modules
+namespace EvoMotion2D.Modules
 {
-	public class Parameter : IParameter
+	public abstract class Parameter : IParameter
 	{
-		float InitialValueRange = 10f;
+        protected float InitialValueRange { get; private set; }
         float MinMutationChance = 0.001f;
         float MinMutationAmount = 0.001f;
 
@@ -22,9 +21,8 @@ namespace AssemblyCSharp.Modules
 			set;
 		}
         
-		public Parameter (bool biggerZero)
+		public Parameter()
 		{
-			Value = biggerZero ? Util.UnsignedRange(InitialValueRange) : Util.SignedRange (InitialValueRange);
 			MutationChance = Util.SignedRange (InitialValueRange);
 			MutationAmount = Util.SignedRange (InitialValueRange);
 		}

@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
-using AssemblyCSharp.Modules;
+using EvoMotion2D.Modules;
 
-namespace AssemblyCSharp
+namespace EvoMotion2D.Cell
 {
 	public class Thruster : MonoBehaviour
 	{
@@ -10,7 +9,7 @@ namespace AssemblyCSharp
 		public GameObject ThrustObject;
 		CellHandler ch;
 
-        public Parameter ThrustToMassRatio = new Parameter(true);
+        public Parameter ThrustToMassRatio = new UnsignedParameter();
 
         // Use this for initialization
         void Awake ()

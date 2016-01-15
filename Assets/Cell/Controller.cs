@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
-using AssemblyCSharp.Modules;
+using EvoMotion2D.Modules;
 
-namespace AssemblyCSharp
+namespace EvoMotion2D.Cell
 {
 	public class Controller : MonoBehaviour
 	{
 		CellHandler ch;
         SensorHandler sh;
-        public Parameter Cooldown = new Parameter(true);
+        public Parameter Cooldown = new UnsignedParameter();
         float LastEjection;
 
 		// Use this for initialization

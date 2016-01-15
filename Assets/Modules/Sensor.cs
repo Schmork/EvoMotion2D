@@ -1,16 +1,16 @@
 ﻿using UnityEngine;
 
-namespace AssemblyCSharp.Modules
+namespace EvoMotion2D.Modules
 {
     public class Sensor : MonoBehaviour
     {
         public float UsageFee;
         public GameObject target, candidate;
 
-        public Parameter ScanChance = new Parameter(true);
-        public Parameter ScanMaxRange = new Parameter(true);
-        public Parameter PreyFactor = new Parameter(false);
-        public Parameter MaxFleeDistance = new Parameter(true);
+        public Parameter ScanChance = new UnsignedParameter();
+        public Parameter ScanMaxRange = new UnsignedParameter();
+        public Parameter PreyFactor = new UnsignedParameter();
+        public Parameter MaxFleeDistance = new UnsignedParameter();
 
         public void SwitchToCandidate()
         {
@@ -24,7 +24,7 @@ namespace AssemblyCSharp.Modules
 
             if (Random.value < ScanChance.Value)
             {
-                GetComponentInParent<CellHandler>().Mass -= UsageFee;
+                GetComponentInParent<Cell.CellHandler>().Mass -= UsageFee;
 
                 var dir = Random.insideUnitCircle.normalized;
                 var start = (Vector2)transform.position;

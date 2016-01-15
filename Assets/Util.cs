@@ -1,5 +1,6 @@
 using System;
-namespace AssemblyCSharp
+
+namespace EvoMotion2D
 {
 	public static class Util
 	{

@@ -1,23 +1,11 @@
 ﻿using UnityEngine;
-using AssemblyCSharp.Modules;
+using EvoMotion2D.Cell;
+using EvoMotion2D.Modules;
 
-namespace AssemblyCSharp
+namespace EvoMotion2D
 {
 	public class CellFactory : MonoBehaviour
 	{
-
-		// Use this for initialization
-		void Start ()
-		{
-	
-		}
-	
-		// Update is called once per frame
-		void Update ()
-		{
-	
-		}
-
 		public static GameObject Spawn (GameObject cell, GameObject spawnArea, float mass) {			
 			var spawn = GameObject.Instantiate (cell);
 			
@@ -27,7 +15,7 @@ namespace AssemblyCSharp
 
 			spawn.transform.position = new Vector2 (x, y);
 			spawn.GetComponent<Rigidbody2D> ().mass = mass;			
-			spawn.name = AssemblyCSharp.Util.CreatePassword (5);
+			spawn.name = Util.CreatePassword (5);
 			spawn.transform.parent = spawnArea.transform;
 			
 			spawn.GetComponent<SpriteRenderer> ().color = new Color (Random.Range(0.3f, 1),
@@ -57,7 +45,7 @@ namespace AssemblyCSharp
 			thrust.GetComponent<Rigidbody2D> ().AddForce (-dir * mass / ch.Mass * factor);
 		
 			thrust.transform.parent = cell.transform.parent;
-			thrust.name = cell.name + AssemblyCSharp.Util.CreatePassword (1);
+			thrust.name = cell.name + Util.CreatePassword (1);
 		
 			var parentColor = cell.GetComponent<SpriteRenderer> ().color;
 			var drift = Random.insideUnitSphere * 0.03f;
