@@ -9,18 +9,18 @@ namespace EvoMotion2D.Cell
 		public GameObject ThrustObject;
 		CellHandler ch;
 
-        public Parameter ThrustToMassRatio = new UnsignedParameter();
+        public UnsignedMutateableFloat ThrustToMassRatio;
 
         // Use this for initialization
         void Awake ()
 		{
 			ch = GetComponent<CellHandler> ();
-            while (ThrustToMassRatio.Value > 0.1) ThrustToMassRatio.Value *= .999f;
+            while (ThrustToMassRatio > 0.1) ThrustToMassRatio *= .999f;
         }
 
 		public void Thrust (Vector2 dir)
 		{
-			var mass = ch.Mass * ThrustToMassRatio.Value;
+			var mass = ch.Mass * ThrustToMassRatio;
 			if (mass < Shrinker.StaticMinMass)
 				return;
 
