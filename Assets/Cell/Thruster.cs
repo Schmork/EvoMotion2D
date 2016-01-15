@@ -1,33 +1,33 @@
 ﻿using UnityEngine;
 using System.Collections;
+using AssemblyCSharp.Modules;
 
 namespace AssemblyCSharp
 {
 	public class Thruster : MonoBehaviour
 	{
-		[Range(0, 1)]
-		public float ThrustToMassRatio;
-		public static float StaticThrustToMassRatio;
-
+        public float UsageFee;
 		public GameObject ThrustObject;
 		CellHandler ch;
 
-		// Use this for initialization
-		void Awake ()
+        public Parameter ThrustToMassRatio = new Parameter(true);
+
+        // Use this for initialization
+        void Awake ()
 		{
-			StaticThrustToMassRatio = ThrustToMassRatio;
 			ch = GetComponent<CellHandler> ();
-		}
+            while (ThrustToMassRatio.Value > 0.1) ThrustToMassRatio.Value *= .999f;
+        }
 
 		public void Thrust (Vector2 dir)
 		{
-			dir = dir.normalized;
-
-			var mass = ch.Mass * ThrustToMassRatio;
+			var mass = ch.Mass * ThrustToMassRatio.Value;
 			if (mass < Shrinker.StaticMinMass)
 				return;
 
-			CellFactory.Thrust (gameObject, mass, dir);
+            ch.Mass -= UsageFee;
+            dir = dir.normalized;
+            CellFactory.Thrust (gameObject, mass, dir);
 		}
 	}
 }

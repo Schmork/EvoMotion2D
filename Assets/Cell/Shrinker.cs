@@ -28,8 +28,16 @@ namespace AssemblyCSharp
 
 			rb.drag = rb.velocity.magnitude / 4f;
 
-			ch.Mass *= .992f;
-			ch.Mass -= .002f;
+			if (ch.Mass > 1)
+            {
+                ch.Mass = Mathf.Pow(ch.Mass, 0.9996f);    
+            }
+            else
+            {
+                ch.Mass *= 0.9999f;
+            }
+             
+			ch.Mass -= .0001f;
 			if (ch.Mass < MinMass)
 				GameObject.Destroy (gameObject);
 		}

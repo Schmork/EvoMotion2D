@@ -8,7 +8,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 405772}
-  - 114: {fileID: 11461226}
+  - 114: {fileID: 11430766}
   m_Layer: 0
   m_Name: Sensor
   m_TagString: Untagged
@@ -28,7 +28,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!114 &11461226
+--- !u!114 &11430766
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -36,15 +36,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 162792}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 95dbefe6867b18149b5417fbdbd41976, type: 3}
+  m_Script: {fileID: 11500000, guid: 30705e0be6a49a643882e63bcb98f1c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UsageFee: .00100000005
   target: {fileID: 0}
   candidate: {fileID: 0}
-  Index: 0
-  ScanChance: .172999993
-  ScanMaxRange: 40
-  PreyFactor: 1.60000002
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -63,6 +60,10 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: PreyFactor
       value: 1.60000002
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: UsageFee
+      value: .00100000005
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

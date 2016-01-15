@@ -14,10 +14,15 @@ namespace AssemblyCSharp
 		}
 
 		public static float SignedRange(float unsignedRange) {
-			return (float)rnd.NextDouble () * 2 * unsignedRange - unsignedRange;
+			return (float)Rnd.NextDouble() * 2 * unsignedRange - unsignedRange;
 		}
-				
-		public static float Clamp(float x) {
+
+        public static float UnsignedRange(float SignedRange)
+        {
+            return (float)Rnd.NextDouble() * SignedRange;
+        }
+
+        public static float Clamp(float x) {
 			return (float)Math.Tanh (x);
 		}
 

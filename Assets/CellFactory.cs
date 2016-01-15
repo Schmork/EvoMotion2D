@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using AssemblyCSharp.Modules;
 
 namespace AssemblyCSharp
 {
@@ -45,6 +45,8 @@ namespace AssemblyCSharp
 			var tCh = thrust.GetComponent<CellHandler> ();
 		
 			tCh.Mass = mass;
+            ch.Mass -= mass;
+
 			tCh.Vel = ch.Vel;
 			tCh.Pos = ch.Pos + dir * (ch.Radius + tCh.Radius + 0.2f) * 0.2f;
 		
@@ -66,7 +68,34 @@ namespace AssemblyCSharp
 		
 			thrust.GetComponent<SpriteRenderer> ().color = childColor;
 
-			return thrust;
+            var tSensor = thrust.GetComponentInChildren<Sensor>();
+            var cSensor = cell.GetComponentInChildren<Sensor>();
+
+            tSensor.MaxFleeDistance = cSensor.MaxFleeDistance;
+            tSensor.MaxFleeDistance.Mutate();
+
+            tSensor.PreyFactor = cSensor.PreyFactor;
+            tSensor.PreyFactor.Mutate();
+
+            tSensor.ScanChance = cSensor.ScanChance;
+            tSensor.ScanChance.Mutate();
+
+            tSensor.ScanMaxRange = cSensor.ScanMaxRange;
+            tSensor.ScanMaxRange.Mutate();
+
+            var tCont = thrust.GetComponent<Controller>();
+            var cCont = cell.GetComponent<Controller>();
+
+            tCont.Cooldown = cCont.Cooldown;
+            tCont.Cooldown.Mutate();
+
+            var tThrust = thrust.GetComponent<Thruster>();
+            var cThrust = cell.GetComponent<Thruster>();
+
+            tThrust.ThrustToMassRatio = cThrust.ThrustToMassRatio;
+            tThrust.ThrustToMassRatio.Mutate();
+
+            return thrust;
 		}
 	}
 }

@@ -11,10 +11,10 @@ public class StayInBounds : MonoBehaviour {
 
 		float dist = Vector2.Distance (transform.position, Vector2.zero);
 		if (dist > 30) {
-			Destroy(gameObject);
-			/*var dir = transform.position.normalized;
-			var mag = transform.position.magnitude;
-			GetComponent<Rigidbody2D> ().AddForce (-dir * mag);*/
+			var dir = transform.position.normalized;
+			var mag = transform.position.magnitude / 10f;
+            if (mag > 1) mag = Mathf.Pow(mag, 0.3f);
+			GetComponent<Rigidbody2D> ().AddForce (-dir * mag);
 		}
 	}
 }

@@ -117,7 +117,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea97daf8807e16e4d8a8f576ee0ce347, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MinMass: .200000003
+  MinMass: .118000001
   ColorShrinkAmount: .00400000019
 --- !u!114 &11427776
 MonoBehaviour:
@@ -145,7 +145,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SensorContainer: {fileID: 141770}
   SensorPrefab: {fileID: 162792, guid: a047ea29120d4f846820c3a93b9f8dce, type: 2}
-  NumberOfSensors: 3
+  NumberOfSensors: 1
 --- !u!114 &11457944
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -179,7 +179,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87c253b4580b21a43921e26d9a49e5fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ThrustToMassRatio: .00600000005
+  UsageFee: .00100000005
   ThrustObject: {fileID: 183316}
 --- !u!212 &21246042
 SpriteRenderer:
@@ -282,7 +282,7 @@ Prefab:
       objectReference: {fileID: 162792, guid: a047ea29120d4f846820c3a93b9f8dce, type: 2}
     - target: {fileID: 0}
       propertyPath: NumberOfSensors
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_IsTrigger
@@ -292,6 +292,18 @@ Prefab:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 0}
+      propertyPath: MinMass
+      value: .118000001
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: Cooldown
+      value: .189999998
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: UsageFee
+      value: .00100000005
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 183316}
