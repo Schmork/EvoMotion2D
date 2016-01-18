@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using EvoMotion2D.Modules;
+using EvoMotion2D.Parameters;
 
 namespace EvoMotion2D.Cell
 {
@@ -7,7 +8,7 @@ namespace EvoMotion2D.Cell
 	{
 		CellHandler ch;
         SensorHandler sh;
-        public UnsignedMutateableFloat Cooldown;
+        public UnsignedMutateableParameter Cooldown;
         float LastEjection;
 
 		// Use this for initialization
@@ -17,19 +18,19 @@ namespace EvoMotion2D.Cell
             sh = GetComponent<SensorHandler>();
             LastEjection = Time.time;
 
-            while (Cooldown < 0.05f) Cooldown += 0.002f;
-            while (Cooldown > 2.5f) Cooldown *= 0.99f;
+            while (Cooldown.Value < 0.05f) Cooldown.Value += 0.002f;
+            while (Cooldown.Value > 2.5f) Cooldown.Value *= 0.99f;
 		}
 	
 		// Update is called once per frame
 		void Update ()
 		{
-			if (ch.Mass < Shrinker.StaticMinMass / GetComponent<Thruster>().ThrustToMassRatio)
+			if (ch.Mass < Shrinker.StaticMinMass / GetComponent<Thruster>().ThrustToMassRatio.Value)
 				enabled = false;
             
             var sensor = sh.getSensors()[0];
 
-            if (sensor.target != null && Time.time > LastEjection + Cooldown)
+            if (sensor.target != null && Time.time > LastEjection + Cooldown.Value)
             {
                 LastEjection = Time.time;
                 ch.Move(sensor.target.transform.position - transform.position);

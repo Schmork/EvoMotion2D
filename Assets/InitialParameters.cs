@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace EvoMotion2D
 {
-    public class Parameters : MonoBehaviour
+    public class InitialParameters : MonoBehaviour
     {
 
         [Range(0.01f, 100f)]

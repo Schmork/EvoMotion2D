@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using EvoMotion2D.Modules;
+using EvoMotion2D.Parameters;
 
 namespace EvoMotion2D.Cell
 {
@@ -9,18 +10,18 @@ namespace EvoMotion2D.Cell
 		public GameObject ThrustObject;
 		CellHandler ch;
 
-        public UnsignedMutateableFloat ThrustToMassRatio;
+        public UnsignedMutateableParameter ThrustToMassRatio = UnsignedMutateableParameter.Random();
 
         // Use this for initialization
         void Awake ()
 		{
 			ch = GetComponent<CellHandler> ();
-            while (ThrustToMassRatio > 0.1) ThrustToMassRatio *= .999f;
+            while (ThrustToMassRatio.Value > 0.1) ThrustToMassRatio.Value *= .999f;
         }
 
 		public void Thrust (Vector2 dir)
 		{
-			var mass = ch.Mass * ThrustToMassRatio;
+			var mass = ch.Mass * ThrustToMassRatio.Value;
 			if (mass < Shrinker.StaticMinMass)
 				return;
 

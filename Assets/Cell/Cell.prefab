@@ -8,6 +8,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 468180}
+  - 114: {fileID: 11421770}
   m_Layer: 0
   m_Name: Sensors
   m_TagString: Untagged
@@ -119,6 +120,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MinMass: .118000001
   ColorShrinkAmount: .00400000019
+--- !u!114 &11421770
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 141770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5404ea7ed82de364786930de9dad8ad7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InitialValueRange: 10
+  MinMutationChance: .00100000005
+  MaxMutationChance: .00100000005
+  MinMutationAmount: .00100000005
+  MaxMutationAmount: .00100000005
 --- !u!114 &11427776
 MonoBehaviour:
   m_ObjectHideFlags: 1

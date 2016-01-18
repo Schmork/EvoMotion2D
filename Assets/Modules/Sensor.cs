@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using EvoMotion2D.Parameters;
 
 namespace EvoMotion2D.Modules
 {
@@ -7,7 +8,8 @@ namespace EvoMotion2D.Modules
         public float UsageFee;
         public GameObject target, candidate;
 
-        public UnsignedMutateableFloat ScanChance, ScanMaxRange, PreyFactor, MaxFleeDistance;
+        public ClampedMutateableParameter ScanChance;
+        public UnsignedMutateableParameter ScanMaxRange, PreyFactor, MaxFleeDistance;
 
         public void SwitchToCandidate()
         {
@@ -19,14 +21,14 @@ namespace EvoMotion2D.Modules
         {
             var myMass = GetComponentInParent<Rigidbody2D>().mass;
 
-            if (Random.value < ScanChance)
+            if (Random.value < ScanChance.Value)
             {
                 GetComponentInParent<Cell.CellHandler>().Mass -= UsageFee;
 
                 var dir = Random.insideUnitCircle.normalized;
                 var start = (Vector2)transform.position;
 
-                RaycastHit2D hit = Physics2D.Raycast(start, dir, ScanMaxRange);
+                RaycastHit2D hit = Physics2D.Raycast(start, dir, ScanMaxRange.Value);
                 if (hit.collider != null && hit.collider.tag == "Cell")
                 {
                     candidate = hit.collider.gameObject;
@@ -35,7 +37,7 @@ namespace EvoMotion2D.Modules
                         return;
 
                     var yourMass = candidate.GetComponent<Rigidbody2D>().mass;
-                    if (yourMass < myMass && yourMass > myMass / PreyFactor)
+                    if (yourMass < myMass && yourMass > myMass / PreyFactor.Value)
                         return;
 
                     if (target == null)
@@ -53,7 +55,7 @@ namespace EvoMotion2D.Modules
                 if (name == target.name) {		// TODO: make this dirty fix obsolete
                     SwitchToCandidate();
                 } else if (myMass < target.GetComponent<Rigidbody2D> ().mass
-                    && Vector2.Distance (transform.position, target.transform.position) > MaxFleeDistance) {
+                    && Vector2.Distance (transform.position, target.transform.position) > MaxFleeDistance.Value) {
                     SwitchToCandidate();
                 }/* else if (myMass < target.GetComponent<Rigidbody2D> ().mass
                     && name.Contains(target.name))

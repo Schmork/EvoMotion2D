@@ -59,21 +59,21 @@ namespace EvoMotion2D
             var tSensor = thrust.GetComponentInChildren<Sensor>();
             var cSensor = cell.GetComponentInChildren<Sensor>();
 
-            tSensor.MaxFleeDistance = cSensor.MaxFleeDistance.Clone();
-            tSensor.PreyFactor = cSensor.PreyFactor.Clone();
-            tSensor.ScanChance = cSensor.ScanChance.Clone();
-            tSensor.ScanMaxRange = cSensor.ScanMaxRange.Clone();
+            tSensor.MaxFleeDistance = cSensor.MaxFleeDistance.Mutate();
+            tSensor.PreyFactor = cSensor.PreyFactor.Mutate();
+            tSensor.ScanChance = cSensor.ScanChance.Mutate();
+            tSensor.ScanMaxRange = cSensor.ScanMaxRange.Mutate();
 
             var tCont = thrust.GetComponent<Controller>();
             var cCont = cell.GetComponent<Controller>();
 
-            tCont.Cooldown = cCont.Cooldown.Clone();
+            tCont.Cooldown = cCont.Cooldown.Mutate();
 
             var tThrust = thrust.GetComponent<Thruster>();
             var cThrust = cell.GetComponent<Thruster>();
 
-            tThrust.ThrustToMassRatio = cThrust.ThrustToMassRatio.Clone();
-            
+            tThrust.ThrustToMassRatio = cThrust.ThrustToMassRatio.Mutate();
+
             return thrust;
 		}
 	}
