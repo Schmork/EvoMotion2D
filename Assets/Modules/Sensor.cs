@@ -6,15 +6,54 @@ namespace EvoMotion2D.Modules
     public class Sensor : MonoBehaviour
     {
         public float UsageFee;
-        public GameObject target, candidate;
+        public GameObject target;
+        private GameObject candidate;
 
         public ClampedMutateableParameter ScanChance;
-        public UnsignedMutateableParameter ScanMaxRange, PreyFactor, MaxFleeDistance;
+        public UnsignedMutateableParameter ScanMaxRange, PreyFactor, MaxFleeDistance, ImportanceFactor;
 
-        public void SwitchToCandidate()
+        public WatchType WhatToWatch;
+
+        public enum WatchType
+        {
+            PREY,
+            PREDATOR
+        }
+
+        void Awake()
+        {
+            ScanChance = new ClampedMutateableParameter(0f, 1f);
+            ScanMaxRange = new UnsignedMutateableParameter();
+            PreyFactor = new UnsignedMutateableParameter();
+            MaxFleeDistance = new UnsignedMutateableParameter();
+            ImportanceFactor = new UnsignedMutateableParameter();
+        }
+
+        void SwitchToCandidate()
         {
             target = candidate;
             candidate = null;
+        }
+
+        void OnDrawGizmos()
+        {
+            if (target != null)
+            {
+                var color = GetComponentInParent<SpriteRenderer>().color;
+                var arrowLenght = 0.4f;
+                var direction = target.transform.position - transform.position;
+
+                var clampDir = Vector3.ClampMagnitude(direction * arrowLenght, 4f);
+
+                if (WhatToWatch == WatchType.PREY)
+                {
+                    DrawArrow.ForGizmoArrow(transform.position, clampDir, color);
+                }
+                if (WhatToWatch == WatchType.PREDATOR)
+                {
+                    DrawArrow.ForGizmoX(transform.position, clampDir, color);
+                }
+            }
         }
 
         void Update()
@@ -33,44 +72,49 @@ namespace EvoMotion2D.Modules
                 {
                     candidate = hit.collider.gameObject;
 
-                    if (name == candidate.name)
-                        return;
+                    if (name == candidate.name) return;
 
                     var yourMass = candidate.GetComponent<Rigidbody2D>().mass;
-                    if (yourMass < myMass && yourMass > myMass / PreyFactor.Value)
-                        return;
+
+                    if (WhatToWatch == WatchType.PREDATOR && yourMass < myMass) return;
+                    if (WhatToWatch == WatchType.PREY) {
+                        if (yourMass > myMass) return;
+                        if (yourMass < myMass && yourMass > myMass / PreyFactor.Value) return;
+                    }                    
 
                     if (target == null)
                     {
-                        target = candidate;
+                        SwitchToCandidate();
                         return;
                     }
 
                     if (getScore(candidate) > getScore(target))
-                        target = candidate;
+                        SwitchToCandidate();
                 }
             }
 
             if (target != null) {
                 if (name == target.name) {		// TODO: make this dirty fix obsolete
-                    SwitchToCandidate();
-                } else if (myMass < target.GetComponent<Rigidbody2D> ().mass
+                    target = null;
+                } else if (WhatToWatch == WatchType.PREDATOR
+                    && myMass < target.GetComponent<Rigidbody2D> ().mass
                     && Vector2.Distance (transform.position, target.transform.position) > MaxFleeDistance.Value) {
-                    SwitchToCandidate();
-                }/* else if (myMass < target.GetComponent<Rigidbody2D> ().mass
-                    && name.Contains(target.name))
-                    SwitchToCandidate();*/
+                        target = null;
+                }
             }
-
-            if (object.Equals (target, null))
-                SwitchToCandidate();
         }
-
+        
         float getScore(GameObject cell)
         {
             var dist = Vector2.Distance(transform.position, cell.transform.position);
             var score = cell.GetComponent<Rigidbody2D>().mass / (dist * dist);
             return score;
+        }
+
+        public float getScore()
+        {
+            if (target == null) return 0f;
+            return getScore(target);
         }
     }
 }

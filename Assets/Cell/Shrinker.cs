@@ -4,7 +4,6 @@ namespace EvoMotion2D.Cell
 {
 	public class Shrinker : MonoBehaviour
 	{
-
 		[Range(0.001f, 1)]
 		public float MinMass;
 		public static float StaticMinMass;
@@ -25,18 +24,18 @@ namespace EvoMotion2D.Cell
 		{
 			extremizeColor ();
 
-			rb.drag = rb.velocity.magnitude / 4f;
+			rb.drag = rb.velocity.magnitude / 5f;
 
 			if (ch.Mass > 1)
             {
-                ch.Mass = Mathf.Pow(ch.Mass, 0.9996f);    
+                ch.Mass = Mathf.Pow(ch.Mass, 0.9997f);    
             }
             else
             {
                 ch.Mass *= 0.9999f;
             }
              
-			ch.Mass -= .0001f;
+			ch.Mass -= .0000001f;
 			if (ch.Mass < MinMass)
 				GameObject.Destroy (gameObject);
 		}

@@ -118,7 +118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea97daf8807e16e4d8a8f576ee0ce347, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MinMass: .118000001
+  MinMass: .254999995
   ColorShrinkAmount: .00400000019
 --- !u!114 &11421770
 MonoBehaviour:
@@ -131,11 +131,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5404ea7ed82de364786930de9dad8ad7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InitialValueRange: 10
-  MinMutationChance: .00100000005
-  MaxMutationChance: .00100000005
-  MinMutationAmount: .00100000005
-  MaxMutationAmount: .00100000005
+  InitialValueRange: 6.69999981
+  MinMutationChance: .0549999997
+  MaxMutationChance: .289000005
+  MinMutationAmount: .0170000009
+  MaxMutationAmount: .180999994
 --- !u!114 &11427776
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -162,7 +162,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SensorContainer: {fileID: 141770}
   SensorPrefab: {fileID: 162792, guid: a047ea29120d4f846820c3a93b9f8dce, type: 2}
-  NumberOfSensors: 1
+  NumberOfSensors: 4
 --- !u!114 &11457944
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -299,7 +299,7 @@ Prefab:
       objectReference: {fileID: 162792, guid: a047ea29120d4f846820c3a93b9f8dce, type: 2}
     - target: {fileID: 0}
       propertyPath: NumberOfSensors
-      value: 1
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_IsTrigger
@@ -311,7 +311,7 @@ Prefab:
       objectReference: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 0}
       propertyPath: MinMass
-      value: .118000001
+      value: .254999995
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: Cooldown
@@ -320,6 +320,26 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: UsageFee
       value: .00100000005
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: InitialValueRange
+      value: 6.69999981
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: MinMutationChance
+      value: .0549999997
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: MaxMutationChance
+      value: .289000005
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: MinMutationAmount
+      value: .0170000009
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: MaxMutationAmount
+      value: .180999994
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

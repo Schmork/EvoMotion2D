@@ -2,14 +2,15 @@ using System;
 
 namespace EvoMotion2D.Parameters
 {
-	public class MutateableParameter : IMutateableParameter
+	public class MutateableParameter
 	{
         public float Value { get; set; }
-        public float MutationChance { get; private set; }
-        public float MutationAmount { get; private set; }
+        public float MutationChance { get; set; }
+        public float MutationAmount { get; set; }
 
-        public MutateableParameter()
-        {
+        public MutateableParameter(float value)
+		{
+            Value = value;
             MutationChance = UnityEngine.Random.Range(
                 InitialParameters.StaticMinMutationChance,
                 InitialParameters.StaticMaxMutationChance);
@@ -19,24 +20,14 @@ namespace EvoMotion2D.Parameters
                 InitialParameters.StaticMaxMutationAmount);
         }
 
-        private MutateableParameter(float value) : this()
-		{
-            Value = value;
-		}
-
         private MutateableParameter(float value, float chance, float amount)
         {
             Value = value;
             MutationChance = chance;
             MutationAmount = amount;
         }
-        
-        public static implicit operator MutateableParameter(float value)
-        {
-            return new MutateableParameter(value);
-        }
 
-		public IMutateableParameter Mutate ()
+		public MutateableParameter Mutate ()
 		{
             float newValue = Value;
             float newMutationChance = MutationChance;
@@ -60,11 +51,6 @@ namespace EvoMotion2D.Parameters
                 newValue += UnityEngine.Random.Range(-newMutationAmount, +newMutationAmount);
 
             return new MutateableParameter(newValue, newMutationChance, newMutationAmount);
-        }
-
-        public IMutateableParameter Random()
-        {
-            throw new NotImplementedException();  // gets overwritten in inherited classe which should be used instead of this one
         }
     }
 }

@@ -10,24 +10,32 @@ namespace EvoMotion2D.Cell
 		public GameObject ThrustObject;
 		CellHandler ch;
 
-        public UnsignedMutateableParameter ThrustToMassRatio = UnsignedMutateableParameter.Random();
+        public ClampedMutateableParameter ThrustToMassRatio;
 
-        // Use this for initialization
         void Awake ()
 		{
-			ch = GetComponent<CellHandler> ();
-            while (ThrustToMassRatio.Value > 0.1) ThrustToMassRatio.Value *= .999f;
+            ThrustToMassRatio = new ClampedMutateableParameter(0.1f, 0.3f);
+            ch = GetComponent<CellHandler> ();
         }
 
 		public void Thrust (Vector2 dir)
 		{
-			var mass = ch.Mass * ThrustToMassRatio.Value;
-			if (mass < Shrinker.StaticMinMass)
-				return;
+            var mass = getThrustMass();
+			if (!canThrust()) return;
 
             ch.Mass -= UsageFee;
             dir = dir.normalized;
             CellFactory.Thrust (gameObject, mass, dir);
 		}
+
+        public float getThrustMass()
+        {
+            return ch.Mass * ThrustToMassRatio.Value;
+        }
+
+        public bool canThrust()
+        {
+            return getThrustMass() > Shrinker.StaticMinMass;
+        }
 	}
 }

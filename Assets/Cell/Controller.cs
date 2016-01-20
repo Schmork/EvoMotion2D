@@ -14,6 +14,7 @@ namespace EvoMotion2D.Cell
 		// Use this for initialization
 		void Start ()
 		{
+            Cooldown = new UnsignedMutateableParameter();
 			ch = GetComponent<CellHandler> ();
             sh = GetComponent<SensorHandler>();
             LastEjection = Time.time;
@@ -22,18 +23,81 @@ namespace EvoMotion2D.Cell
             while (Cooldown.Value > 2.5f) Cooldown.Value *= 0.99f;
 		}
 	
+        public void Activate()
+        {
+            notifyAll(true);
+        }
+
+        public void Deactivate()
+        {
+            notifyAll(false);
+        }
+
+        void notifyAll(bool status)
+        {
+            enabled = status;
+            foreach (var sensor in sh.GetComponentsInChildren<Sensor>())
+            {
+                sensor.enabled = status;
+            }
+        }
+
 		// Update is called once per frame
 		void Update ()
 		{
-			if (ch.Mass < Shrinker.StaticMinMass / GetComponent<Thruster>().ThrustToMassRatio.Value)
-				enabled = false;
-            
-            var sensor = sh.getSensors()[0];
+            if (!GetComponent<Thruster>().canThrust()) Deactivate();
 
-            if (sensor.target != null && Time.time > LastEjection + Cooldown.Value)
+            var sensors = sh.getSensors();
+            var maxScore = -1f;
+            var importantSensorIndex = -1;
+
+            for (int i = 0; i < sensors.Length; i++)
             {
+                if (sensors[i].target == null) continue;
+                var sensor = sensors[i];
+
+                var yourMass = sensor.target.GetComponent<CellHandler>().Mass;
+                var myMass = GetComponent<CellHandler>().Mass;
+                
+                if (sensor.WhatToWatch == Sensor.WatchType.PREY && yourMass > myMass)
+                {
+                    sensor.target = null;
+                    continue;
+                }
+                if (sensor.WhatToWatch == Sensor.WatchType.PREDATOR && yourMass < myMass)
+                {
+                    sensor.target = null;
+                    continue;
+                }
+
+                var score = sensor.getScore() * sensor.ImportanceFactor.Value;
+
+                if (score > maxScore)
+                {
+                    maxScore = score;
+                    importantSensorIndex = i;
+                }
+            }
+
+            if (importantSensorIndex != -1 && Time.time > LastEjection + Cooldown.Value)
+            {
+                var sensor = sh.getSensors()[importantSensorIndex];
+
                 LastEjection = Time.time;
-                ch.Move(sensor.target.transform.position - transform.position);
+
+                float moveDir = 0f;
+                if (sensor.GetComponent<Sensor>().WhatToWatch == Sensor.WatchType.PREDATOR)
+                {
+                    moveDir = 1;
+                }
+
+                if (sensor.GetComponent<Sensor>().WhatToWatch == Sensor.WatchType.PREY)
+                {
+                    moveDir = -1;
+                }
+                Debug.Assert(Mathf.Abs(moveDir) == 1);
+                
+                ch.Move(moveDir * (sensor.target.transform.position - transform.position));
             }
 
 			/*

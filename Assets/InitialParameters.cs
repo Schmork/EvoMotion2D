@@ -7,22 +7,23 @@ namespace EvoMotion2D
     {
 
         [Range(0.01f, 100f)]
-        public float InitialValueRange = 10f;
+        public float InitialValueRange;
 
         [Range(0.000001f, 1f)]
-        public float MinMutationChance = 0.001f;
+        public float MinMutationChance;
         [Range(0.000001f, 1f)]
-        public float MaxMutationChance = 0.001f;
+        public float MaxMutationChance;
 
         [Range(0.000001f, 1f)]
-        public float MinMutationAmount = 0.001f;
+        public float MinMutationAmount;
         [Range(0.000001f, 1f)]
-        public float MaxMutationAmount = 0.001f;
+        public float MaxMutationAmount;
 
         public static float StaticInitialValueRange, 
             StaticMinMutationChance, StaticMaxMutationChance,
             StaticMinMutationAmount, StaticMaxMutationAmount;
 
+        //  taking parameters from Unity Editor and providing them as static variables to other scripts
         void Start()
         {
             StaticInitialValueRange = InitialValueRange;

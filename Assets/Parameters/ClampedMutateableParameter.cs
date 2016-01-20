@@ -2,27 +2,26 @@
 {
     public class ClampedMutateableParameter : MutateableParameter
     {
-        static float min = 0.00001f;
-        static float max = 1;
+        float min, max;
 
-        public static implicit operator ClampedMutateableParameter(float value)
+        public ClampedMutateableParameter (float min, float max) : base(UnityEngine.Random.Range(min, max))
         {
-            System.Diagnostics.Debug.Assert(value >= 0);
-
-            MutateableParameter temp = value;
-            return temp as ClampedMutateableParameter;
-        }
-        public static new ClampedMutateableParameter Random()
-        {
-            return UnityEngine.Random.Range(min, max);
+            this.min = min;
+            this.max = max;            
         }
 
         public new ClampedMutateableParameter Mutate()
         {
-            var temp = base.Mutate() as ClampedMutateableParameter;
-            if (temp.Value < min) temp.Value = min;
-            if (temp.Value > max) temp.Value = max;
-            return temp;
+            var mp = base.Mutate();
+            if (mp.Value < min) mp.Value = min;
+            if (mp.Value > max) mp.Value = max;
+
+            var cmp = new ClampedMutateableParameter(min, max);
+            cmp.Value = mp.Value;
+            cmp.MutationChance = mp.MutationChance;
+            cmp.MutationAmount = mp.MutationAmount;
+
+            return cmp;
         }
     }
 }

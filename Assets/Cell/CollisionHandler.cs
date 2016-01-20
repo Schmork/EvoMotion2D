@@ -15,7 +15,6 @@ namespace EvoMotion2D.Cell
 
             if (myRb.mass > yourRb.mass)
             {
-
                 var myCh = GetComponent<CellHandler>();
                 var yourCh = other.GetComponent<CellHandler>();
 
@@ -23,7 +22,7 @@ namespace EvoMotion2D.Cell
                 var yourColor = other.GetComponent<SpriteRenderer>().color;
 
                 var transferredMass = myCh.Radius + yourCh.Radius - Vector2.Distance(transform.position, other.transform.position);
-                transferredMass /= 4f;
+                transferredMass /= 2f;
                 var colorFactor = transferredMass / myRb.mass / 2f;
 
                 if (transferredMass < 0) return;
@@ -45,7 +44,7 @@ namespace EvoMotion2D.Cell
                 GetComponent<SpriteRenderer>().color = newColor;
 
                 if (myRb.mass > Shrinker.StaticMinMass)
-                    GetComponent<Controller>().enabled = true;
+                    GetComponent<Controller>().Activate();
             }
         }
     }

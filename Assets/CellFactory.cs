@@ -38,7 +38,7 @@ namespace EvoMotion2D
 			tCh.Vel = ch.Vel;
 			tCh.Pos = ch.Pos + dir * (ch.Radius + tCh.Radius + 0.2f) * 0.2f;
 		
-			dir *= -2000;
+			dir *= -500;
 			var factor = 13f;
 		
 			cell.GetComponent<Rigidbody2D> ().AddForce (dir);
@@ -63,6 +63,9 @@ namespace EvoMotion2D
             tSensor.PreyFactor = cSensor.PreyFactor.Mutate();
             tSensor.ScanChance = cSensor.ScanChance.Mutate();
             tSensor.ScanMaxRange = cSensor.ScanMaxRange.Mutate();
+            tSensor.ImportanceFactor = cSensor.ImportanceFactor.Mutate();
+
+            tSensor.WhatToWatch = cSensor.WhatToWatch;
 
             var tCont = thrust.GetComponent<Controller>();
             var cCont = cell.GetComponent<Controller>();

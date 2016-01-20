@@ -2,26 +2,26 @@
 {
     public class UnsignedMutateableParameter : MutateableParameter
     {
-        public static implicit operator UnsignedMutateableParameter(float value)
-        {
-            System.Diagnostics.Debug.Assert(value >= 0);
-
-            MutateableParameter temp = value;
-            return temp as UnsignedMutateableParameter;
-        }
-
-        public static new UnsignedMutateableParameter Random()
-        {
-            return UnityEngine.Random.Range(
+        public UnsignedMutateableParameter() : base(UnityEngine.Random.Range(
                 0,
-                +InitialParameters.StaticInitialValueRange);
-        }
-
+                +InitialParameters.StaticInitialValueRange))
+        { }
+        
         public new UnsignedMutateableParameter Mutate()
         {
-            var temp = base.Mutate() as UnsignedMutateableParameter;
-            if (temp.Value < 0) temp.Value = 0;
-            return temp;
+            //UnityEngine.Debug.Log("Before : value = " + Value + ", chance = " + MutationChance + ", amount = " + MutationAmount);
+
+            var mp = base.Mutate();
+            if (mp.Value < 0) mp.Value = 0;
+            
+            var ump = new UnsignedMutateableParameter();
+            ump.Value = mp.Value;
+            ump.MutationChance = mp.MutationChance;
+            ump.MutationAmount = mp.MutationAmount;
+
+            //UnityEngine.Debug.Log("After  : value = " + ump.Value + ", chance = " + ump.MutationChance + ", amount = " + ump.MutationAmount);
+
+            return ump;
         }
     }
 }

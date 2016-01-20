@@ -16,8 +16,8 @@ namespace EvoMotion2D.Cell
             if (dist > 30)
             {
                 var dir = transform.position.normalized;
-                var mag = transform.position.magnitude / 10f;
-                if (mag > 1) mag = Mathf.Pow(mag, 0.3f);
+                var mag = transform.position.magnitude / 500f;
+                if (mag > 1) mag = Mathf.Pow(mag, 0.01f);
                 GetComponent<Rigidbody2D>().AddForce(-dir * mag);
             }
         }
