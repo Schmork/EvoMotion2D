@@ -24,25 +24,34 @@ namespace EvoMotion2D.Cell
 		{
 			extremizeColor ();
 
-			rb.drag = rb.velocity.magnitude / 5f;
+            var fattieBonus = 0f;
+            if (ch.Mass > 1) fattieBonus = Mathf.Sqrt(ch.Mass / 10f);
 
+            rb.drag = rb.velocity.magnitude - fattieBonus;
+
+            var minDrag = 0.04f;
+            if (rb.drag < minDrag) rb.drag = minDrag;
+            
 			if (ch.Mass > 1)
             {
-                ch.Mass = Mathf.Pow(ch.Mass, 0.9997f);    
+                ch.Mass = Mathf.Pow(ch.Mass, 1 - ch.Mass / 99999f);    
             }
             else
             {
-                ch.Mass *= 0.9999f;
+                ch.Mass *= 0.99999f;
             }
              
-			ch.Mass -= .0000001f;
-			if (ch.Mass < MinMass)
-				GameObject.Destroy (gameObject);
+			ch.Mass -= .000003f;
+            if (ch.Mass < MinMass)
+            {
+                CellFactory.Cells.Remove(gameObject);
+                GameObject.Destroy(gameObject);
+            }
 		}
 
 		void extremizeColor ()
 		{
-			var color = GetComponent<SpriteRenderer> ().color;
+            var color = ch.Color;
 		
 			float[] values = { color.r, color.g, color.b };
 		
@@ -69,9 +78,8 @@ namespace EvoMotion2D.Cell
 			for (int i = 0; i < values.Length; i++) {
 				values [i] = Mathf.Clamp (values [i], 0, 1);
 			}
-		
-			var newColor = new Color (values [0], values [1], values [2]);
-			GetComponent<SpriteRenderer> ().color = newColor;
+
+            ch.Color = new Color (values [0], values [1], values [2]);
 		}
 	}
 }

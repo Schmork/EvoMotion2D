@@ -17,22 +17,26 @@ namespace EvoMotion2D.Cell
             {
                 var myCh = GetComponent<CellHandler>();
                 var yourCh = other.GetComponent<CellHandler>();
-
-                var myColor = GetComponent<SpriteRenderer>().color;
-                var yourColor = other.GetComponent<SpriteRenderer>().color;
-
-                var transferredMass = myCh.Radius + yourCh.Radius - Vector2.Distance(transform.position, other.transform.position);
-                transferredMass /= 2f;
-                var colorFactor = transferredMass / myRb.mass / 2f;
-
+                
+                var transferredMass = myCh.Radius + yourCh.Radius - Vector2.Distance(transform.position, other.transform.position) + 0.02f;
+                transferredMass *= 0.01f;
+                
                 if (transferredMass < 0) return;
                 if (transferredMass > yourRb.mass)
                 {
                     transferredMass = yourRb.mass;
                 }
+                
+                    //Debug.Log("TransferredMass: " + transferredMass + " from " + other.name + " to " + name);
+                //    Debug.Break();
+
 
                 yourRb.mass -= transferredMass;
                 myRb.mass += transferredMass;
+
+                var myColor = GetComponent<SpriteRenderer>().color;
+                var yourColor = other.GetComponent<SpriteRenderer>().color;
+                var colorFactor = transferredMass / myRb.mass / 2f;
 
                 var red = yourColor.r - myColor.r;
                 var green = yourColor.g - myColor.g;

@@ -6,22 +6,33 @@ namespace EvoMotion2D.Cell
 	{
 		Thruster thruster;
 		[Range(0.01f, 50f)]
-		public float
-			Scale;
+		public float Scale;
+        float scaleSprite = 1f;  // fits for pacman.tif
+        Rigidbody2D rb2d;
+        SpriteRenderer spriteRenderer;
 
 		void Awake ()
 		{
 			thruster = GetComponent<Thruster> ();
+            rb2d = GetComponent<Rigidbody2D>();
+            spriteRenderer = GetComponent<SpriteRenderer>();
 		}
-
+        
 		public float Mass {
 			get { return GetComponent<Rigidbody2D> ().mass; }
 			set {
-				GetComponent<Rigidbody2D> ().mass = value;
+                rb2d.mass = value;
 				var radius = getRadius ();
-				GetComponent<Transform> ().localScale = new Vector2 (radius * 2, radius * 2);
+                transform.localScale = new Vector2(radius, radius) * scaleSprite;
 			}
 		}
+
+        public Color Color 
+        {
+            get { return spriteRenderer.color; }
+            set { spriteRenderer.color = value; }
+        }
+
 
 		public float Radius {
 			get { return getRadius (); }
@@ -33,18 +44,18 @@ namespace EvoMotion2D.Cell
 		}
 
 		public Vector2 Vel {
-			get { return GetComponent<Rigidbody2D> ().velocity; }
-			set { GetComponent<Rigidbody2D> ().velocity = value; }
+			get { return rb2d.velocity; }
+			set { rb2d.velocity = value; }
 		}
 
-		public void Move (Vector2 dir)
+		public void Move ()
 		{
-			thruster.Thrust (dir);
+			thruster.Thrust ();
 		}
 
 		float getRadius ()
 		{
-			return Mathf.Sqrt (GetComponent<Rigidbody2D> ().mass * Scale);
+            return Mathf.Sqrt(rb2d.mass * Scale);
 		}
 	}
 }

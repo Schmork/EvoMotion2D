@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Linq;
 
 namespace EvoMotion2D
 {
@@ -28,15 +29,16 @@ namespace EvoMotion2D
 		}
 
 		float totalMass ()
-		{		
-			var cells = GameObject.FindGameObjectsWithTag ("Cell");
+		{
+            return CellFactory.Cells.Sum(cell => cell.GetComponent<Rigidbody2D>().mass);
+			/*var cells = GameObject.FindGameObjectsWithTag ("Cell");
 			float mass = 0;
 			foreach (var cell in cells) {
-				var rb = cell.GetComponent<Rigidbody2D> ();
+				var rb = cell.GetComponentInChildren<Rigidbody2D> ();
 				if (rb)
 					mass += rb.mass;
 			}
-			return mass;
+			return mass;*/
 		}
 	}
 }

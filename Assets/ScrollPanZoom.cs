@@ -9,14 +9,14 @@ namespace EvoMotion2D
         public float ScrollSpeed = 0;
         public float ScrollEdge = 0.01f;
         public float PanSpeed = 10;
-        Vector2 ZoomRange = new Vector2(-10, 100);
-        float CurrentZoom = 0;
-        public float ZoomZpeed = 1;
+        Vector2 ZoomRange = new Vector2(0, 1000);
+        float CurrentZoom = 20;
+        public float ZoomSpeed = 0.03f;
 
         void Update()
         {
             //PAN
-            if (Input.GetMouseButton(0))
+            if (Input.GetMouseButton(2))
             {
                 //(Input.mousePosition.x - Screen.width * 0.5)/(Screen.width * 0.5)
 
@@ -46,10 +46,10 @@ namespace EvoMotion2D
 
             //ZOOM IN/OUT
 
-            CurrentZoom -= Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime * 1000 * ZoomZpeed;
+            CurrentZoom -= Input.GetAxis("Mouse ScrollWheel") * ZoomSpeed * Time.deltaTime;
             CurrentZoom = Mathf.Clamp(CurrentZoom, ZoomRange.x, ZoomRange.y);
 
-            GetComponent<Camera>().orthographicSize = 10 + CurrentZoom * 3f;
+            GetComponent<Camera>().orthographicSize = 10 + CurrentZoom;
         }
     }
 }

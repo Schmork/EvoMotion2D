@@ -6,14 +6,14 @@ namespace EvoMotion2D.Cell
     {
 
         [Range(0, 500)]
-        public float Width, Height;
+        public float MaxDistance;
 
         // Update is called once per frame
         void Update()
         {
 
             float dist = Vector2.Distance(transform.position, Vector2.zero);
-            if (dist > 30)
+            if (dist > MaxDistance)
             {
                 var dir = transform.position.normalized;
                 var mag = transform.position.magnitude / 500f;

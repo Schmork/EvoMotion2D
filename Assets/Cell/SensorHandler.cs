@@ -21,6 +21,7 @@ namespace EvoMotion2D.Cell
                 sensor.transform.parent = SensorContainer.transform;
 
                 sensor.GetComponent<Sensor>().WhatToWatch = Random.value < .5 ? Sensor.WatchType.PREDATOR : Sensor.WatchType.PREY;
+                //sensor.GetComponent<Sensor>().WhatToWatch = Sensor.WatchType.PREDATOR;
             }
         }
 

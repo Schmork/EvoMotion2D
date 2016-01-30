@@ -18,14 +18,17 @@ namespace EvoMotion2D.Cell
             ch = GetComponent<CellHandler> ();
         }
 
-		public void Thrust (Vector2 dir)
+		public void Thrust ()
 		{
             var mass = getThrustMass();
-			if (!canThrust()) return;
+            //Debug.Log(canThrust());
 
-            ch.Mass -= UsageFee;
-            dir = dir.normalized;
-            CellFactory.Thrust (gameObject, mass, dir);
+            if (!canThrust()) return;
+            //Debug.Log(mass);
+
+            if (ch.Mass < Shrinker.StaticMinMass * 5) UsageFee = -getThrustMass() * 0.7f;     // reward and encouragement to move. Not given to biggies.
+            ch.Mass -= UsageFee;            
+            CellFactory.Thrust (gameObject, mass);
 		}
 
         public float getThrustMass()

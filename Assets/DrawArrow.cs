@@ -4,23 +4,13 @@ using UnityEngine;
 
 public static class DrawArrow
 {
-    public static bool doNotDraw = false;
+    public static bool doNotDraw = true;
     
-    public static void ForGizmo(Vector3 pos, Vector3 direction, float arrowHeadLength = 0.25f, float arrowHeadAngle = 20.0f)
+    public static void GizmoArrow(Vector3 pos, Vector3 direction, Color color, float arrowHeadLength = 0.6f, float arrowHeadAngle = 20.0f)
     {
         if (doNotDraw) return;
 
-        Gizmos.DrawRay(pos, direction);
-
-        Vector3 right = Quaternion.LookRotation(direction) * Quaternion.Euler(0, 180 + arrowHeadAngle, 0) * new Vector3(0, 0, 1);
-        Vector3 left = Quaternion.LookRotation(direction) * Quaternion.Euler(0, 180 - arrowHeadAngle, 0) * new Vector3(0, 0, 1);
-        Gizmos.DrawRay(pos + direction, right * arrowHeadLength);
-        Gizmos.DrawRay(pos + direction, left * arrowHeadLength);
-    }
-
-    public static void ForGizmoArrow(Vector3 pos, Vector3 direction, Color color, float arrowHeadLength = 0.25f, float arrowHeadAngle = 20.0f)
-    {
-        if (doNotDraw) return;
+        direction = direction.normalized * 4f;
 
         Gizmos.color = color;
         Gizmos.DrawRay(pos, direction);
@@ -31,39 +21,43 @@ public static class DrawArrow
         Gizmos.DrawRay(pos + direction, left * arrowHeadLength);
     }
 
-    public static void ForGizmoX(Vector3 pos, Vector3 direction, Color color, float arrowHeadLength = 0.25f, float arrowHeadAngle = 20.0f)
+    public static void GizmoBlock(Vector3 pos, Vector3 direction, Color color, float arrowHeadLength = 0.7f, float arrowHeadAngle = 20.0f)
     {
         if (doNotDraw) return;
+        direction = direction.normalized * 3f;
 
         Gizmos.color = color;
         Gizmos.DrawRay(pos, direction);
 
         Vector3 right = Quaternion.LookRotation(direction) * Quaternion.Euler(0, 180, 0) * new Vector3(0, 1, 0);
 
-        Gizmos.DrawRay(pos + direction, right);
-        Gizmos.DrawRay(pos + direction, -right);
+        Gizmos.DrawRay(pos + direction, right * arrowHeadLength);
+        Gizmos.DrawRay(pos + direction, -right * arrowHeadLength);
     }
 
-    public static void ForDebug(Vector3 pos, Vector3 direction, float arrowHeadLength = 0.25f, float arrowHeadAngle = 20.0f)
+    public static void GizmoSensor(Vector3 pos, Vector3 direction, Color color, float arrowHeadLength = 0.6f, float arrowHeadAngle = 20.0f)
     {
-        if (doNotDraw) return;
+        //if (doNotDraw) return;
 
-        Debug.DrawRay(pos, direction);
+        direction = direction.normalized * 4f;
 
-        Vector3 right = Quaternion.LookRotation(direction) * Quaternion.Euler(0, 180 + arrowHeadAngle, 0) * new Vector3(0, 0, 1);
-        Vector3 left = Quaternion.LookRotation(direction) * Quaternion.Euler(0, 180 - arrowHeadAngle, 0) * new Vector3(0, 0, 1);
-        Debug.DrawRay(pos + direction, right * arrowHeadLength);
-        Debug.DrawRay(pos + direction, left * arrowHeadLength);
+        Gizmos.color = color;
+        Gizmos.DrawRay(pos, direction);
+        
+        Gizmos.DrawSphere(pos + direction, arrowHeadLength);
     }
-    public static void ForDebug(Vector3 pos, Vector3 direction, Color color, float arrowHeadLength = 0.25f, float arrowHeadAngle = 20.0f)
+
+    public static void GizmoHeading(Vector3 pos, Vector3 direction, Color color, float arrowHeadLength = 0.7f, float arrowHeadAngle = 20.0f)
     {
-        if (doNotDraw) return;
+        //if (doNotDraw) return;
+        direction = direction.normalized * 4f;
 
-        Debug.DrawRay(pos, direction, color);
+        Gizmos.color = color;
+        Gizmos.DrawRay(pos, direction);
 
-        Vector3 right = Quaternion.LookRotation(direction) * Quaternion.Euler(0, 180 + arrowHeadAngle, 0) * new Vector3(0, 0, 1);
-        Vector3 left = Quaternion.LookRotation(direction) * Quaternion.Euler(0, 180 - arrowHeadAngle, 0) * new Vector3(0, 0, 1);
-        Debug.DrawRay(pos + direction, right * arrowHeadLength, color);
-        Debug.DrawRay(pos + direction, left * arrowHeadLength, color);
+        Vector3 right = Quaternion.LookRotation(direction) * Quaternion.Euler(0, 180 + arrowHeadAngle, 0) * new Vector3(0, 1, 1);
+        Vector3 left = Quaternion.LookRotation(direction) * Quaternion.Euler(0, 180 - arrowHeadAngle, 0) * new Vector3(0, -1, 1);
+        Gizmos.DrawRay(pos + direction, right * arrowHeadLength);
+        Gizmos.DrawRay(pos + direction, left * arrowHeadLength);
     }
 }
