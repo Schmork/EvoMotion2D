@@ -17,7 +17,7 @@ namespace EvoMotion2D
         }
 
 		public static GameObject Spawn (GameObject cell, GameObject spawnArea, float mass) {			
-			var spawn = GameObject.Instantiate (cell);
+			var spawn = Instantiate(cell);
             Cells.Add(spawn);
 
 			var box = spawnArea.GetComponent<BoxCollider2D> ();
@@ -32,17 +32,16 @@ namespace EvoMotion2D
 			spawn.GetComponent<SpriteRenderer> ().color = new Color (Random.Range(0.3f, 1),
 			                                                        Random.Range(0.3f, 1),
 			                                                        Random.Range(0.3f, 1));
-
-            var rotation = new Quaternion(0, 0, Random.value, Random.value);
-            spawn.transform.rotation = rotation;
-			return spawn;
+            
+            spawn.transform.rotation = new Quaternion(0, 0, Random.value, Random.value);
+            return spawn;
 		}
 
         public static GameObject Thrust (GameObject cell, float mass)
 		{
 			var ch = cell.GetComponent<CellHandler> ();
 
-			var thrust = GameObject.Instantiate (cell);
+			var thrust = Instantiate(cell);
             Cells.Add(thrust);
 
 			var tCh = thrust.GetComponent<CellHandler> ();
@@ -54,8 +53,7 @@ namespace EvoMotion2D
             Vector2 thrustDirection = - cell.GetComponent<Rigidbody2D>().transform.right;
             var distance = thrustDirection * (ch.Radius + tCh.Radius) * extraSpace;
 
-            tCh.Pos =  ch.Pos + distance;
-            //Debug.Log("parent: " + ch.Pos + ", Child: " + tCh.Pos + ", mass: " + mass + ", distance: " + distance + ", dir: " + dir);
+            tCh.Pos = ch.Pos + distance;
             tCh.Vel = ch.Vel;
 
             var rotationRange = 20;     // thrust ojects divert by +/- this value from their parent's rotation
@@ -80,13 +78,20 @@ namespace EvoMotion2D
 		
 			tCh.Color = childColor;
 
-            var tSensorHandler = thrust.GetComponentInChildren<SensorHandler>();
-            var cSensorHandler = cell.GetComponentInChildren<SensorHandler>();
+            mutateParameters(cell, thrust);
 
-            for (int i = 0; i < cSensorHandler.NumberOfSensors; i++)
+            return thrust;
+		}
+
+        static void mutateParameters(GameObject parent, GameObject child)
+        {
+            var cSensorHandler = child.GetComponentInChildren<SensorHandler>();
+            var pSensorHandler = parent.GetComponentInChildren<SensorHandler>();
+
+            for (int i = 0; i < pSensorHandler.NumberOfSensors; i++)
             {
-                var tSensor = tSensorHandler.getSensors()[i];
-                var cSensor = cSensorHandler.getSensors()[i];
+                var tSensor = cSensorHandler.getSensors()[i];
+                var cSensor = pSensorHandler.getSensors()[i];
 
                 tSensor.MaxFleeDistance = cSensor.MaxFleeDistance.Mutate();
                 tSensor.PreyFactor = cSensor.PreyFactor.Mutate();
@@ -96,15 +101,13 @@ namespace EvoMotion2D
 
                 tSensor.WhatToWatch = cSensor.WhatToWatch;
             }
-            
-            var tController = thrust.GetComponent<Controller>();
-            var cController = cell.GetComponent<Controller>();
+
+            var tController = child.GetComponent<Controller>();
+            var cController = parent.GetComponent<Controller>();
 
             tController.Cooldown = cController.Cooldown.Mutate();
             tController.MaxAngleForThrusting = cController.MaxAngleForThrusting.Mutate();
-            thrust.GetComponent<Thruster>().ThrustToMassRatio = cell.GetComponent<Thruster>().ThrustToMassRatio.Mutate();
-
-            return thrust;
-		}
+            child.GetComponent<Thruster>().ThrustToMassRatio = parent.GetComponent<Thruster>().ThrustToMassRatio.Mutate();
+        }
 	}
 }

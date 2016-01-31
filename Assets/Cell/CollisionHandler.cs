@@ -4,18 +4,27 @@ namespace EvoMotion2D.Cell
 {
     public class CollisionHandler : MonoBehaviour
     {
+        Rigidbody2D myRb;
+        CellHandler myCh;
+        SpriteRenderer mySr;
+
+        void Awake()
+        {
+            myRb = GetComponent<Rigidbody2D>();
+            myCh = GetComponent<CellHandler>();
+            mySr = GetComponent<SpriteRenderer>();
+        }
+
         void OnTriggerStay2D(Collider2D coll)
         {
             var other = coll.gameObject;
             if (other.tag != "Cell")
                 return;
-
-            var myRb = GetComponent<Rigidbody2D>();
+            
             var yourRb = other.GetComponent<Rigidbody2D>();
 
             if (myRb.mass > yourRb.mass)
             {
-                var myCh = GetComponent<CellHandler>();
                 var yourCh = other.GetComponent<CellHandler>();
                 
                 var transferredMass = myCh.Radius + yourCh.Radius - Vector2.Distance(transform.position, other.transform.position) + 0.02f;
@@ -26,15 +35,11 @@ namespace EvoMotion2D.Cell
                 {
                     transferredMass = yourRb.mass;
                 }
-                
-                    //Debug.Log("TransferredMass: " + transferredMass + " from " + other.name + " to " + name);
-                //    Debug.Break();
-
 
                 yourRb.mass -= transferredMass;
                 myRb.mass += transferredMass;
 
-                var myColor = GetComponent<SpriteRenderer>().color;
+                var myColor = mySr.color;
                 var yourColor = other.GetComponent<SpriteRenderer>().color;
                 var colorFactor = transferredMass / myRb.mass / 2f;
 
@@ -45,7 +50,7 @@ namespace EvoMotion2D.Cell
                 var newColor = new Color(myColor.r + red * colorFactor,
                                      myColor.g + green * colorFactor,
                                      myColor.b + blue * colorFactor, 1);
-                GetComponent<SpriteRenderer>().color = newColor;
+                mySr.color = newColor;
 
                 if (myRb.mass > Shrinker.StaticMinMass)
                     GetComponent<Controller>().Activate();

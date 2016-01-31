@@ -6,8 +6,11 @@ namespace EvoMotion2D.Cell
 {
     public class Controller : MonoBehaviour
     {
-        CellHandler ch;
-        SensorHandler sh;
+        CellHandler cellHandler;
+        SensorHandler sensorHandler;
+        SpriteRenderer sprite;
+        Thruster thruster;
+        Rigidbody2D rb2d;
         public UnsignedMutateableParameter Cooldown;
         public UnsignedMutateableParameter MaxAngleForThrusting;
         float LastEjection;
@@ -19,12 +22,12 @@ namespace EvoMotion2D.Cell
         {
             Cooldown = new UnsignedMutateableParameter();
             MaxAngleForThrusting = new UnsignedMutateableParameter();
-            ch = GetComponent<CellHandler>();
-            sh = GetComponent<SensorHandler>();
+            cellHandler = GetComponent<CellHandler>();
+            sensorHandler = GetComponent<SensorHandler>();
+            sprite = GetComponent<SpriteRenderer>();
+            thruster = GetComponent<Thruster>();
+            rb2d = GetComponent<Rigidbody2D>();
             LastEjection = Time.time;
-
-            while (Cooldown.Value < 0.05f) Cooldown.Value += 0.002f;
-            while (Cooldown.Value > 2.5f) Cooldown.Value *= 0.99f;
         }
 
         public void Activate()
@@ -40,38 +43,19 @@ namespace EvoMotion2D.Cell
         void notifyAll(bool status)
         {
             enabled = status;
-            foreach (var sensor in sh.GetComponentsInChildren<Sensor>())
+            foreach (var sensor in sensorHandler.GetComponentsInChildren<Sensor>())
             {
                 sensor.enabled = status;
             }
         }
-
-        void OnDrawGizmos()
-        {
-            return;
-            if (primaryTarget != null)
-            {
-                var color = GetComponent<SpriteRenderer>().color;
-                var arrowLenght = 0.8f;
-                var direction = primaryTarget.transform.position - transform.position;
-
-                var clampDir = Vector3.ClampMagnitude(direction * arrowLenght, 30f);
-
-                DrawArrow.GizmoSensor(transform.position, clampDir, color);
-
-                direction = transform.right;
-                clampDir = Vector3.ClampMagnitude(direction * arrowLenght, 30f);
-                DrawArrow.GizmoHeading(transform.position, clampDir, color);
-            }
-        }
-
+        
         // Update is called once per frame
         void Update()
         {
-            if (!GetComponent<Thruster>().canThrust()) Deactivate();
+            if (!thruster.canThrust()) Deactivate();
 
-            var sensors = sh.getSensors();
-            var maxScore = -1f;
+            var sensors = sensorHandler.getSensors();
+            var maxScore = float.MinValue;
             Sensor importantSensor = null;
 
             for (int i = 0; i < sensors.Length; i++)
@@ -81,7 +65,7 @@ namespace EvoMotion2D.Cell
                 var sensor = sensors[i];
 
                 var yourMass = sensor.target.GetComponent<CellHandler>().Mass;
-                var myMass = GetComponent<CellHandler>().Mass;
+                var myMass = cellHandler.Mass;
 
                 if (sensor.WhatToWatch == Sensor.WatchType.PREY && yourMass > myMass)
                 {
@@ -116,7 +100,7 @@ namespace EvoMotion2D.Cell
                 // where is the target?
                 Vector2 targetDirection = primaryTarget.transform.position - transform.position;
                 // where are we looking?
-                Vector2 lookDirection = GetComponent<Rigidbody2D>().transform.right;
+                Vector2 lookDirection = rb2d.transform.right;
 
                 // to indicate the sign of the (otherwise absolute) angle
                 Vector3 cross = Vector3.Cross(targetDirection, lookDirection);
@@ -138,18 +122,18 @@ namespace EvoMotion2D.Cell
                 {
                     if (predatorTurn)
                     {
-                        GetComponent<Rigidbody2D>().AddTorque(turnAwayForce);
+                        rb2d.AddTorque(turnAwayForce);
                     }
-                    else ch.Move();
+                    else cellHandler.Move();
                 }
 
                 if (sensor.GetComponent<Sensor>().WhatToWatch == Sensor.WatchType.PREY)
                 {
                     if (preyTurn)
                     {
-                        GetComponent<Rigidbody2D>().AddTorque(-turnTowardsForce);
+                        rb2d.AddTorque(-turnTowardsForce);
                     }
-                    else ch.Move();
+                    else cellHandler.Move();
                 }
             }
         }

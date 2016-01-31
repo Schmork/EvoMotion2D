@@ -37,7 +37,7 @@ public static class DrawArrow
 
     public static void GizmoSensor(Vector3 pos, Vector3 direction, Color color, float arrowHeadLength = 0.6f, float arrowHeadAngle = 20.0f)
     {
-        //if (doNotDraw) return;
+        if (doNotDraw) return;
 
         direction = direction.normalized * 4f;
 

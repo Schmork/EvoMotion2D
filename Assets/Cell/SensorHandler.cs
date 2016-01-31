@@ -17,7 +17,7 @@ namespace EvoMotion2D.Cell
         {
             while (SensorContainer.transform.childCount < NumberOfSensors)
             {
-                var sensor = (GameObject)GameObject.Instantiate(SensorPrefab, transform.position, Quaternion.identity);
+                var sensor = (GameObject)Instantiate(SensorPrefab, transform.position, Quaternion.identity);
                 sensor.transform.parent = SensorContainer.transform;
 
                 sensor.GetComponent<Sensor>().WhatToWatch = Random.value < .5 ? Sensor.WatchType.PREDATOR : Sensor.WatchType.PREY;

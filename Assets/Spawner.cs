@@ -19,26 +19,16 @@ namespace EvoMotion2D
 
 		void spawn ()
 		{
-			//Debug.Log ("total mass: " + totalMass ());
-			if (TotalMassLimit - totalMass () < MinMass)
+			if (TotalMassLimit - totalMass() < MinMass)
 				return;
 
-			var mass = Random.value * (MaxMass - MinMass) + MinMass;
-
+            var mass = Random.Range(MinMass, MaxMass);
 			CellFactory.Spawn (SpawnedItem, gameObject, mass);
 		}
 
 		float totalMass ()
 		{
             return CellFactory.Cells.Sum(cell => cell.GetComponent<Rigidbody2D>().mass);
-			/*var cells = GameObject.FindGameObjectsWithTag ("Cell");
-			float mass = 0;
-			foreach (var cell in cells) {
-				var rb = cell.GetComponentInChildren<Rigidbody2D> ();
-				if (rb)
-					mass += rb.mass;
-			}
-			return mass;*/
 		}
 	}
 }

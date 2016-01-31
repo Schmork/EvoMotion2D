@@ -7,7 +7,6 @@ namespace EvoMotion2D.Cell
 		Thruster thruster;
 		[Range(0.01f, 50f)]
 		public float Scale;
-        float scaleSprite = 1f;  // fits for pacman.tif
         Rigidbody2D rb2d;
         SpriteRenderer spriteRenderer;
 
@@ -23,7 +22,7 @@ namespace EvoMotion2D.Cell
 			set {
                 rb2d.mass = value;
 				var radius = getRadius ();
-                transform.localScale = new Vector2(radius, radius) * scaleSprite;
+                transform.localScale = new Vector2(radius, radius);
 			}
 		}
 
