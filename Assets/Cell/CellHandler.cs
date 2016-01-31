@@ -9,6 +9,7 @@ namespace EvoMotion2D.Cell
 		public float Scale;
         Rigidbody2D rb2d;
         SpriteRenderer spriteRenderer;
+        public float CollectedMass;
 
 		void Awake ()
 		{

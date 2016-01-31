@@ -39,6 +39,9 @@ namespace EvoMotion2D.Cell
                 yourRb.mass -= transferredMass;
                 myRb.mass += transferredMass;
 
+                myCh.CollectedMass += transferredMass;
+                //Debug.Break();
+
                 var myColor = mySr.color;
                 var yourColor = other.GetComponent<SpriteRenderer>().color;
                 var colorFactor = transferredMass / myRb.mass / 2f;
