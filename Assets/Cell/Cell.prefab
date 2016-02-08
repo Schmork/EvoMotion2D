@@ -185,7 +185,7 @@ MonoBehaviour:
   Age: 0
   MaxAge: 40
   HasStrayedOff: 0
-  toolTip: {fileID: 175100, guid: b954df12fd0f1244ab10bd18a906ca54, type: 2}
+  toolTip: {fileID: 187912, guid: b954df12fd0f1244ab10bd18a906ca54, type: 2}
 --- !u!114 &11494272
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -320,7 +320,7 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: toolTip
       value: 
-      objectReference: {fileID: 175100, guid: b954df12fd0f1244ab10bd18a906ca54, type: 2}
+      objectReference: {fileID: 187912, guid: b954df12fd0f1244ab10bd18a906ca54, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 102164}
