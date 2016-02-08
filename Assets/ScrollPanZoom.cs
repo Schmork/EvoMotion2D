@@ -6,12 +6,12 @@ namespace EvoMotion2D
     public class ScrollPanZoom : MonoBehaviour
     {
 
-        public float ScrollSpeed = 0;
-        public float ScrollEdge = 0.01f;
-        public float PanSpeed = 10;
+        public float ScrollSpeed;
+        public float ScrollEdge;
+        public float PanSpeed;
         Vector2 ZoomRange = new Vector2(0, 1000);
         float CurrentZoom = 20;
-        public float ZoomSpeed = 0.03f;
+        public float ZoomSpeed;
 
         void Update()
         {
@@ -46,7 +46,7 @@ namespace EvoMotion2D
 
             //ZOOM IN/OUT
 
-            CurrentZoom -= Input.GetAxis("Mouse ScrollWheel") * ZoomSpeed * Time.deltaTime;
+            CurrentZoom -= Input.GetAxis("Mouse ScrollWheel") * ZoomSpeed;
             CurrentZoom = Mathf.Clamp(CurrentZoom, ZoomRange.x, ZoomRange.y);
 
             GetComponent<Camera>().orthographicSize = 10 + CurrentZoom;

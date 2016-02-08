@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Linq;
 
 namespace EvoMotion2D.Cell
 {
@@ -8,17 +9,31 @@ namespace EvoMotion2D.Cell
         [Range(0, 500)]
         public float MaxDistance;
 
+		float minForce = 0.25f;
+
         // Update is called once per frame
         void Update()
         {
+			var strayOffs = CellFactory.Cells.
+				Where (cell => Vector2.Distance (cell.transform.position, Vector2.zero) > MaxDistance);
 
-            float dist = Vector2.Distance(transform.position, Vector2.zero);
-            if (dist > MaxDistance)
+			foreach (var cell in CellFactory.Cells)
+				cell.GetComponent<CellHandler> ().HasStrayedOff = false;
+
+			foreach(var cell in strayOffs)
             {
-                var dir = transform.position.normalized;
-                var mag = transform.position.magnitude / 500f;
-                if (mag > 1) mag = Mathf.Pow(mag, 0.01f);
-                GetComponent<Rigidbody2D>().AddForce(-dir * mag);
+				cell.GetComponent<CellHandler>().HasStrayedOff = true;
+				var t = cell.transform;
+				var dir = t.position.normalized;
+
+				var rb2d = t.GetComponent<Rigidbody2D>();
+				
+				var force = t.position.magnitude / 500f;
+				if (force > 1) force = Mathf.Pow(force, 0.01f);
+				if (force < minForce) force = minForce;
+				force = minForce;
+
+				rb2d.AddForce(-dir * force * rb2d.mass);
             }
         }
     }

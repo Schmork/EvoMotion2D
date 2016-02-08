@@ -8,6 +8,8 @@ namespace EvoMotion2D.Cell
         CellHandler myCh;
         SpriteRenderer mySr;
 
+		public float RejuvenationFactor;		// age is reduced by collectedMass * this factor
+
         void Awake()
         {
             myRb = GetComponent<Rigidbody2D>();
@@ -40,7 +42,7 @@ namespace EvoMotion2D.Cell
                 myRb.mass += transferredMass;
 
                 myCh.CollectedMass += transferredMass;
-                //Debug.Break();
+				myCh.Age -= (int)(transferredMass * RejuvenationFactor);
 
                 var myColor = mySr.color;
                 var yourColor = other.GetComponent<SpriteRenderer>().color;

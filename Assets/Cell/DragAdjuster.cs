@@ -20,7 +20,7 @@ namespace EvoMotion2D.Cell
 
             rb.drag = rb.velocity.magnitude - fattieBonus;
 
-            var minDrag = 0.04f;
+			var minDrag = 0.04f;
             if (rb.drag < minDrag) rb.drag = minDrag;
         }
     }

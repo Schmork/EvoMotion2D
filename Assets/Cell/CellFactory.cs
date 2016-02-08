@@ -6,34 +6,48 @@ namespace EvoMotion2D
 {
 	public class CellFactory : MonoBehaviour
 	{
-        public GameObject Cube;
-        static GameObject cube;
+		public float ColorDrift;
+		public static float colorDrift;
+
+		public float SpawnRadius;
+		public static float spawnRadius;
 
         public static List<GameObject> Cells = new List<GameObject>();
 
+		public List<Sprite> Images;
+		public static List<Sprite> images;
+
         void Start()
         {
-            cube = Cube;
+			colorDrift = ColorDrift;
+			spawnRadius = SpawnRadius;
+			images = Images;
         }
 
 		public static GameObject Spawn (GameObject cell, GameObject spawnArea, float mass) {			
+
+			var point = Random.insideUnitCircle * spawnRadius;
+
+			var obstacle = Physics2D.OverlapCircle (point, CellHandler.getRadius(mass * 3));
+			if (obstacle) return null;
+
 			var spawn = Instantiate(cell);
-            Cells.Add(spawn);
 
-			var box = spawnArea.GetComponent<BoxCollider2D> ();
-            var x = Random.Range(0, box.size.x) - box.size.x / 2;
-            var y = Random.Range(0, box.size.y) - box.size.y / 2;
-
-			spawn.transform.position = new Vector2 (x, y);
+			spawn.transform.position = point;
+            spawn.transform.rotation = new Quaternion(0, 0, Random.value, Random.value);
 			spawn.GetComponent<CellHandler> ().Mass = mass;			
 			spawn.name = Util.CreatePassword (5);
 			spawn.transform.parent = spawnArea.transform;
+
+			var spriteRenderer = spawn.GetComponent<SpriteRenderer> ();
 			
-			spawn.GetComponent<SpriteRenderer> ().color = new Color (Random.Range(0.3f, 1),
-			                                                        Random.Range(0.3f, 1),
-			                                                        Random.Range(0.3f, 1));
-            
-            spawn.transform.rotation = new Quaternion(0, 0, Random.value, Random.value);
+			spriteRenderer.color = new Color (Random.Range(0.3f, 1),
+			                                  Random.Range(0.3f, 1),
+			                                  Random.Range(0.3f, 1));
+			//spriteRenderer.sprite = images [(int)(Random.value * images.Count)];
+
+			Cells.Add(spawn);
+			
             return spawn;
 		}
 
@@ -60,7 +74,7 @@ namespace EvoMotion2D
             var rotationVariance = Random.Range(-rotationRange, rotationRange);
             thrust.transform.Rotate(new Vector3(0, 0, 180 - rotationVariance));
 
-            thrustDirection *= 7 * ch.Mass;  // adjust force
+			thrustDirection *= 7 * ch.Mass * Time.deltaTime;  // adjust force
             var factorThrustFasterThanCell = 3f;// 1/5f;
 		
 			cell.GetComponent<Rigidbody2D> ().AddForce (-thrustDirection);
@@ -70,7 +84,7 @@ namespace EvoMotion2D
 			thrust.name = cell.name + Util.CreatePassword (1);
 
             var parentColor = ch.Color;
-			var drift = Random.insideUnitSphere * 0.07f;    // slight change in color for children
+			var drift = Random.insideUnitSphere * colorDrift;    // slight change in color for children
 		
 			var childColor = new Color (parentColor.r + drift.x,
 		                            parentColor.g + drift.y,
@@ -106,7 +120,10 @@ namespace EvoMotion2D
             var cController = parent.GetComponent<Controller>();
 
             tController.Cooldown = cController.Cooldown.Mutate();
-            tController.MaxAngleForThrusting = cController.MaxAngleForThrusting.Mutate();
+			tController.MaxPreyAngle = cController.MaxPreyAngle.Mutate ();
+			tController.MaxPredatorAngle = cController.MaxPredatorAngle.Mutate ();
+			tController.MinTurnForce = cController.MinTurnForce.Mutate ();
+			tController.MaxTurnForce = cController.MaxTurnForce.Mutate ();
             child.GetComponent<Thruster>().ThrustToMassRatio = parent.GetComponent<Thruster>().ThrustToMassRatio.Mutate();
         }
 	}

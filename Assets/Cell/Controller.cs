@@ -11,8 +11,8 @@ namespace EvoMotion2D.Cell
         SpriteRenderer sprite;
         Thruster thruster;
         Rigidbody2D rb2d;
-        public UnsignedMutateableParameter Cooldown;
-        public UnsignedMutateableParameter MaxAngleForThrusting;
+		public UnsignedMutateableParameter Cooldown, MinTurnForce, MaxTurnForce;
+		public ClampedMutateableParameter MaxPreyAngle, MaxPredatorAngle;
         float LastEjection;
 
         GameObject primaryTarget;
@@ -21,7 +21,11 @@ namespace EvoMotion2D.Cell
         void Start()
         {
             Cooldown = new UnsignedMutateableParameter();
-            MaxAngleForThrusting = new UnsignedMutateableParameter();
+			MinTurnForce = new UnsignedMutateableParameter(0.01f);
+			MaxTurnForce = new UnsignedMutateableParameter(2f);
+			MaxPreyAngle = new ClampedMutateableParameter (1f, 180f);
+			MaxPredatorAngle = new ClampedMutateableParameter (1f, 180f);
+			MaxPredatorAngle.Value = 45f;
             cellHandler = GetComponent<CellHandler>();
             sensorHandler = GetComponent<SensorHandler>();
             sprite = GetComponent<SpriteRenderer>();
@@ -93,10 +97,6 @@ namespace EvoMotion2D.Cell
                 var sensor = importantSensor;
                 primaryTarget = sensor.target;
 
-                // rotate if angle is bigger than that to decrease it
-                float maxPreyAngle = 9f;
-                float maxPredatorAngle = 30f;
-
                 // where is the target?
                 Vector2 targetDirection = primaryTarget.transform.position - transform.position;
                 // where are we looking?
@@ -109,20 +109,16 @@ namespace EvoMotion2D.Cell
 
                 // the angle, ranging from 0 to 180 degrees
                 float angle = Vector2.Angle(targetDirection, lookDirection);
-                bool preyTurn = angle > maxPreyAngle;
-                bool predatorTurn = angle > maxPredatorAngle;
-
-                var min = 0.8f;
-                var max = 12f;
-
-                var turnTowardsForce = Mathf.Clamp(angle / 4f, min, max) * sign;
-                var turnAwayForce = Mathf.Clamp((180 - angle) / 3f, min, max) * sign;
+                bool preyTurn = angle > MaxPreyAngle.Value;
+                bool predatorTurn = angle < MaxPredatorAngle.Value;
                 
                 if (sensor.GetComponent<Sensor>().WhatToWatch == Sensor.WatchType.PREDATOR)
                 {
                     if (predatorTurn)
                     {
-                        rb2d.AddTorque(turnAwayForce);
+						var force = Mathf.Sqrt((180 - angle) / MaxPredatorAngle.Value) * (MaxTurnForce.Value - MinTurnForce.Value) + MinTurnForce.Value;
+						force *= sign * Time.deltaTime;
+                        rb2d.AddTorque(force);
                     }
                     else cellHandler.Move();
                 }
@@ -131,7 +127,9 @@ namespace EvoMotion2D.Cell
                 {
                     if (preyTurn)
                     {
-                        rb2d.AddTorque(-turnTowardsForce);
+						var force = Mathf.Sqrt(angle / MaxPreyAngle.Value) * (MaxTurnForce.Value - MinTurnForce.Value) + MinTurnForce.Value;
+						force *= sign * Time.deltaTime;
+                        rb2d.AddTorque(-force);
                     }
                     else cellHandler.Move();
                 }

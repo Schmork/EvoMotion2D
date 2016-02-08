@@ -5,21 +5,21 @@ namespace EvoMotion2D
 {
     public class LeaderBoardScript : MonoBehaviour
     {
+		public int NumberOfEntries;		// ToDo: adjust UI output to really display the desired number of entries
+
         // Update is called once per frame
         void Update()
         {
             var cells = CellFactory.Cells;
-            var orderedCells = cells.OrderBy(cell => cell.GetComponent<Cell.CellHandler>().CollectedMass).ToList();
-            orderedCells.Reverse();
-
-            var firstX = orderedCells.Take(40);
+			var maxCells = cells.OrderBy (cell => cell.GetComponent<Cell.CellHandler> ().CollectedMass).Reverse ().Take (NumberOfEntries);
 
             var text = "";
-            foreach (var cell in firstX)
+            foreach (var cell in maxCells)
             {
                 var ch = cell.GetComponent<Cell.CellHandler>();
                 var hexCol = hexFromFloat(ch.Color);
-                text += "<color=" + hexCol + ">" + cell.name + ": " + ch.CollectedMass + "</color> \n";
+				var collectedMass = ch.CollectedMass.ToString("0.0");		// show the first digit only
+                text += "<color=" + hexCol + ">" + cell.name + ": " + collectedMass + "</color> \n";
             }
             GetComponent<UnityEngine.UI.Text>().text = text;
         }

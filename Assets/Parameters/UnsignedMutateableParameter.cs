@@ -6,6 +6,9 @@
                 0,
                 +InitialParameters.StaticInitialValueRange))
         { }
+
+		public UnsignedMutateableParameter(float max) : base(UnityEngine.Random.Range(0, max))
+		{ }
         
         public new UnsignedMutateableParameter Mutate()
         {

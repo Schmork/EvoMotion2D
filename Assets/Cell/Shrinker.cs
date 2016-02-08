@@ -26,20 +26,18 @@ namespace EvoMotion2D.Cell
 		// Update is called once per frame
 		void Update ()
 		{            
-			if (ch.Mass > 1)
-            {
-                ch.Mass = Mathf.Pow(ch.Mass, 1 - ch.Mass / 99999f);    
-            }
-            else
-            {
-                ch.Mass *= 1 - RelativeLoss;
-            }
-             
-			ch.Mass -= ConstantLoss;
+			if (ch.Age > ch.MaxAge) {
+				var overAge = ch.Age - ch.MaxAge;
+				
+				ch.Mass *= 1 - RelativeLoss * overAge;
+				ch.Mass -= ConstantLoss * overAge;
+			}
+
             if (ch.Mass < MinMass)
             {
                 CellFactory.Cells.Remove(gameObject);
-                GameObject.Destroy(gameObject);
+                Destroy(gameObject.GetComponentInChildren<CellHandler>().toolTip.gameObject);
+                Destroy(gameObject);
             }
 		}
 	}

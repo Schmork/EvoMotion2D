@@ -13,7 +13,6 @@ GameObject:
   - 114: {fileID: 11470712}
   - 114: {fileID: 11410028}
   - 114: {fileID: 11428362}
-  - 114: {fileID: 11407892}
   - 50: {fileID: 5049984}
   - 58: {fileID: 5872468}
   - 212: {fileID: 21293498}
@@ -76,7 +75,7 @@ Rigidbody2D:
   m_GameObject: {fileID: 102164}
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: .409999996
+  m_AngularDrag: .100000001
   m_GravityScale: 0
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -96,18 +95,6 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: .75999999
---- !u!114 &11407892
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 102164}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a5fe40673c0faa48a7fea81891c3a9d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MaxDistance: 29
 --- !u!114 &11410028
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -119,8 +106,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea97daf8807e16e4d8a8f576ee0ce347, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MinMass: .203999996
-  ConstantLoss: 1.00000001e-07
+  MinMass: .211999997
+  ConstantLoss: 2.00000002e-07
   RelativeLoss: 1.00000001e-07
 --- !u!114 &11421232
 MonoBehaviour:
@@ -144,6 +131,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e974797e40971041ae374f022cfaf83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RejuvenationFactor: .100000001
 --- !u!114 &11428362
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -155,7 +143,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87c253b4580b21a43921e26d9a49e5fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UsageFee: .0299999993
+  UsageFee: -.0900000036
   ThrustObject: {fileID: 102164}
 --- !u!114 &11441232
 MonoBehaviour:
@@ -193,7 +181,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55e9cb1753f7b5b4e988d04baeb00916, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Scale: 1
+  CollectedMass: 0
+  Age: 0
+  MaxAge: 40
+  HasStrayedOff: 0
+  toolTip: {fileID: 175100, guid: b954df12fd0f1244ab10bd18a906ca54, type: 2}
 --- !u!114 &11494272
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -205,7 +197,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5455ba71a1e7bf840a593537dad715ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ColorShrinkAmount: .00999999978
+  ColorShrinkAmount: .00499999989
 --- !u!212 &21293498
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -243,7 +235,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 0}
       propertyPath: UsageFee
-      value: .0299999993
+      value: -.0900000036
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: ThrustObject
@@ -255,11 +247,11 @@ Prefab:
       objectReference: {fileID: 162792, guid: a047ea29120d4f846820c3a93b9f8dce, type: 2}
     - target: {fileID: 0}
       propertyPath: MinMass
-      value: .203999996
+      value: .211999997
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: ColorShrinkAmount
-      value: .00999999978
+      value: .00499999989
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_LinearDrag
@@ -279,7 +271,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_AngularDrag
-      value: .409999996
+      value: .100000001
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: Width
@@ -307,12 +299,28 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: ConstantLoss
-      value: 1.00000001e-07
+      value: 2.00000002e-07
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: RelativeLoss
       value: 1.00000001e-07
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: MaxAge
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: RejuvenationFactor
+      value: .100000001
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: RotateFee
+      value: .00100000005
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: toolTip
+      value: 
+      objectReference: {fileID: 175100, guid: b954df12fd0f1244ab10bd18a906ca54, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 102164}
