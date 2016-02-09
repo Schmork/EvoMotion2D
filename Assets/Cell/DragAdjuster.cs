@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿// used to modify the linear drag of the Rigidbody2D
+
+
+using UnityEngine;
 
 namespace EvoMotion2D.Cell
 {
@@ -20,7 +23,7 @@ namespace EvoMotion2D.Cell
 
             rb.drag = rb.velocity.magnitude - fattieBonus;
 
-			var minDrag = 0.04f;
+			var minDrag = 0.01f;
             if (rb.drag < minDrag) rb.drag = minDrag;
         }
     }

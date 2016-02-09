@@ -10,7 +10,7 @@ public static class DrawArrow
     {
         if (doNotDraw) return;
 
-        direction = direction.normalized * 4f;
+        direction = direction.normalized * 2f;
 
         Gizmos.color = color;
         Gizmos.DrawRay(pos, direction);
@@ -24,7 +24,7 @@ public static class DrawArrow
     public static void GizmoBlock(Vector3 pos, Vector3 direction, Color color, float arrowHeadLength = 0.7f, float arrowHeadAngle = 20.0f)
     {
         if (doNotDraw) return;
-        direction = direction.normalized * 3f;
+        direction = direction.normalized * 1f;
 
         Gizmos.color = color;
         Gizmos.DrawRay(pos, direction);

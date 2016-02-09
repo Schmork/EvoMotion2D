@@ -28,7 +28,12 @@ namespace EvoMotion2D
 
 		float totalMass ()
 		{
-            return CellFactory.Cells.Sum(cell => cell.GetComponent<Rigidbody2D>().mass);
+            var sum = 0f;
+            foreach (Transform t in transform)
+            {
+                sum += t.GetComponent<Rigidbody2D>().mass;
+            }
+            return sum;
 		}
 	}
 }

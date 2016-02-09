@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿// this is where the cell decides if it should turn or move or to which of it's sensors it should listen.
+
+
+using UnityEngine;
 using EvoMotion2D.Modules;
 using EvoMotion2D.Parameters;
 
@@ -22,10 +25,10 @@ namespace EvoMotion2D.Cell
         {
             Cooldown = new UnsignedMutateableParameter();
 			MinTurnForce = new UnsignedMutateableParameter(0.01f);
-			MaxTurnForce = new UnsignedMutateableParameter(2f);
+			MaxTurnForce = new UnsignedMutateableParameter(1f);
 			MaxPreyAngle = new ClampedMutateableParameter (1f, 180f);
 			MaxPredatorAngle = new ClampedMutateableParameter (1f, 180f);
-			MaxPredatorAngle.Value = 45f;
+			//MaxPredatorAngle.Value = 45f;
             cellHandler = GetComponent<CellHandler>();
             sensorHandler = GetComponent<SensorHandler>();
             sprite = GetComponent<SpriteRenderer>();

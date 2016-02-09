@@ -1,4 +1,9 @@
-﻿using UnityEngine;
+﻿// this class intensifies a cell's color. 
+// As they collide and mix with each other, their color tends towards an average, grayish color.
+// this class counteracts this movement to have more colors than just gray in the long run.
+
+
+using UnityEngine;
 
 namespace EvoMotion2D.Cell
 {

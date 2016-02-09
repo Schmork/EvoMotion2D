@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿// collision handling - big eats small.
+
+
+using UnityEngine;
 
 namespace EvoMotion2D.Cell
 {
@@ -19,10 +22,7 @@ namespace EvoMotion2D.Cell
 
         void OnTriggerStay2D(Collider2D coll)
         {
-            var other = coll.gameObject;
-            if (other.tag != "Cell")
-                return;
-            
+            var other = coll.gameObject;            
             var yourRb = other.GetComponent<Rigidbody2D>();
 
             if (myRb.mass > yourRb.mass)
@@ -46,7 +46,7 @@ namespace EvoMotion2D.Cell
 
                 var myColor = mySr.color;
                 var yourColor = other.GetComponent<SpriteRenderer>().color;
-                var colorFactor = transferredMass / myRb.mass / 2f;
+                var colorFactor = transferredMass / myRb.mass / 2.3f;
 
                 var red = yourColor.r - myColor.r;
                 var green = yourColor.g - myColor.g;

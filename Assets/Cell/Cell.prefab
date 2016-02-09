@@ -143,7 +143,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87c253b4580b21a43921e26d9a49e5fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UsageFee: -.0900000036
+  UsageFee: -.0700000003
   ThrustObject: {fileID: 102164}
 --- !u!114 &11441232
 MonoBehaviour:
@@ -169,7 +169,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SensorContainer: {fileID: 149268}
   SensorPrefab: {fileID: 162792, guid: a047ea29120d4f846820c3a93b9f8dce, type: 2}
-  NumberOfSensors: 4
+  NumberOfSensors: 3
 --- !u!114 &11481162
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -184,7 +184,8 @@ MonoBehaviour:
   CollectedMass: 0
   Age: 0
   MaxAge: 40
-  HasStrayedOff: 0
+  Generation: 0
+  Children: 0
   toolTip: {fileID: 187912, guid: b954df12fd0f1244ab10bd18a906ca54, type: 2}
 --- !u!114 &11494272
 MonoBehaviour:
@@ -197,7 +198,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5455ba71a1e7bf840a593537dad715ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ColorShrinkAmount: .00499999989
+  ColorShrinkAmount: .00600000005
 --- !u!212 &21293498
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -235,7 +236,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 0}
       propertyPath: UsageFee
-      value: -.0900000036
+      value: -.0700000003
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: ThrustObject
@@ -251,7 +252,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: ColorShrinkAmount
-      value: .00499999989
+      value: .00600000005
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_LinearDrag
@@ -295,7 +296,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: NumberOfSensors
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: ConstantLoss

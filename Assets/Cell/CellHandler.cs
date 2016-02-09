@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿// this class serves as a central node in the network of classes. It provides access to some of the cell's attributes, like mass for example.
+
+
+using UnityEngine;
 
 namespace EvoMotion2D.Cell
 {
@@ -11,7 +14,8 @@ namespace EvoMotion2D.Cell
         public float CollectedMass;
 		public float Age;
 		public int MaxAge;		// not really a max - but from this point on, cells start to shrink drastically
-		public bool HasStrayedOff;
+        public int Generation;
+        public int Children;
 
         public GameObject toolTip;
 		
@@ -22,27 +26,17 @@ namespace EvoMotion2D.Cell
             spriteRenderer = GetComponent<SpriteRenderer>();
 			Age = 0f;
             toolTip = Instantiate(toolTip);// GetComponentInChildren<TextMesh>();
+            toolTip.GetComponent<ToolTipHandler>().cellHandler = this;
 		}
 
 		void Update() {
-			Age += Mathf.Sqrt(Mass);
+			Age += Mass * Time.deltaTime;
 
             var textMesh = toolTip.GetComponentInChildren<TextMesh>();
-
-            textMesh.color = changeAlpha(-0.01f);
-
-            var format = "{0:0.#}";
-
-            var text = name + "\n";
-            text += "mass: " + string.Format(format, Mass) + "\n";
-            text += "age : " + string.Format(format, Age) + "\n";
-            text += "coll: " + string.Format(format, CollectedMass) + "\n";
-            textMesh.text = text;
-
-            var bounds = textMesh.GetComponent<Renderer>().bounds;
-            var offset = new Vector3(0, bounds.extents.y * 1.1f + 1, -1);
+            var bounds = toolTip.GetComponentInChildren<SpriteRenderer>().bounds;
+            var offset = new Vector3(0, bounds.extents.y + 2, -1);
             
-            toolTip.transform.position = transform.position + getRadius() * Vector3.up * 2f + offset;
+            toolTip.transform.position = transform.position + 1.1f * getRadius() * Vector3.up + offset;
         }
 
         public float Mass {
@@ -91,25 +85,24 @@ namespace EvoMotion2D.Cell
 
         void OnMouseOver()
         {
-            var textMesh = toolTip.GetComponentInChildren<TextMesh>();
-            var color = textMesh.color;
+            var textMesh = toolTip.GetComponentInChildren<TextMesh>();              // tooltip text
+            var spriteRenderer = toolTip.GetComponentInChildren<SpriteRenderer>();  // tooltip background
+
             var factor = 1.7f;
+            
+            var color = textMesh.color;
             color = new Color(Color.r * factor,
                               Color.g * factor,
                               Color.b * factor,
-                              1f);  // make fully visible
-            textMesh.text = name;
-            //textMesh.fontSize = (int)(Mass * 50);
+                              1f);                                          // make fully visible
             textMesh.color = color;
-        }
 
-        Color changeAlpha(float change)
-        {
-            var color = toolTip.GetComponentInChildren<TextMesh>().color;
-            return new Color(color.r,
-                             color.g,
-                             color.b,
-                             color.a + change);
+            color = spriteRenderer.color;
+            color = new Color(Color.r * factor,
+                              Color.g * factor,
+                              Color.b * factor,
+                              ToolTipHandler.TextToBackgroundAlphaRatio);   // make less visible
+            spriteRenderer.color = color;
         }
     }
 }

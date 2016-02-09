@@ -1,5 +1,9 @@
-﻿using UnityEngine;
-using System.Linq;
+﻿// To prevent the cells from running away in all directions, an invisible pull towards the middle is applied.
+
+
+using UnityEngine;
+using System.Collections.Generic;
+using System;
 
 namespace EvoMotion2D.Cell
 {
@@ -9,31 +13,23 @@ namespace EvoMotion2D.Cell
         [Range(0, 500)]
         public float MaxDistance;
 
-		float minForce = 0.25f;
+        public float ForceFactor;
+        public float minForce;
 
         // Update is called once per frame
         void Update()
         {
-			var strayOffs = CellFactory.Cells.
-				Where (cell => Vector2.Distance (cell.transform.position, Vector2.zero) > MaxDistance);
-
-			foreach (var cell in CellFactory.Cells)
-				cell.GetComponent<CellHandler> ().HasStrayedOff = false;
-
-			foreach(var cell in strayOffs)
+            foreach (Transform t in transform)        // get all children aka all cells
             {
-				cell.GetComponent<CellHandler>().HasStrayedOff = true;
-				var t = cell.transform;
-				var dir = t.position.normalized;
-
-				var rb2d = t.GetComponent<Rigidbody2D>();
-				
-				var force = t.position.magnitude / 500f;
-				if (force > 1) force = Mathf.Pow(force, 0.01f);
-				if (force < minForce) force = minForce;
-				force = minForce;
-
-				rb2d.AddForce(-dir * force * rb2d.mass);
+                var d = Vector2.Distance(Vector2.zero, t.position);
+                if (d > MaxDistance)
+                {
+                    var rb2d = t.GetComponent<Rigidbody2D>();
+                    var force = rb2d.mass * Time.deltaTime * ForceFactor;
+                    var actualMinForce = Time.deltaTime * minForce * rb2d.mass;
+                    if (force < actualMinForce) force = actualMinForce;
+                    rb2d.AddForce( - t.position * force);
+                }
             }
         }
     }

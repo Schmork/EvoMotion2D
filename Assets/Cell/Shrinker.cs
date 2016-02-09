@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿// when cells age, they shrink. The more they age, the faster they shrink.
+// Purpose: To clear the field from big, boring couch-potatoes and tiny, shattered debris.
+
+
+using UnityEngine;
 
 namespace EvoMotion2D.Cell
 {
@@ -29,13 +33,12 @@ namespace EvoMotion2D.Cell
 			if (ch.Age > ch.MaxAge) {
 				var overAge = ch.Age - ch.MaxAge;
 				
-				ch.Mass *= 1 - RelativeLoss * overAge;
-				ch.Mass -= ConstantLoss * overAge;
+				ch.Mass *= 1 - RelativeLoss * overAge * Time.deltaTime;
+				ch.Mass -= ConstantLoss * overAge * Time.deltaTime;
 			}
 
             if (ch.Mass < MinMass)
             {
-                CellFactory.Cells.Remove(gameObject);
                 Destroy(gameObject.GetComponentInChildren<CellHandler>().toolTip.gameObject);
                 Destroy(gameObject);
             }
